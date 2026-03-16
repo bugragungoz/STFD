@@ -34,7 +34,13 @@ This pattern keeps service state aligned with real application usage instead of 
    - Right-click shortcut -> `Properties` -> `Advanced...` -> enable `Run as administrator`
 5. Launch the application from this shortcut for service-aware startup/shutdown behavior.
 
+
 Note: If your software is installed in a different directory or you are using a different version (e.g., v232 instead of v241), right-click the .bat file, select 'Edit', and update the file path inside the script to match your system.
+
+Important: Open Windows Services (services.msc) and set the Startup Type of the target services to "Manual".
+​If set to "Automatic", they will constantly run in the background, defeating the purpose of this script.
+​If set to "Disabled", the script will not be able to start them.
+
 
 ## Operational Requirements
 
