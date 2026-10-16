@@ -77,11 +77,12 @@ impl PathCache {
                 let parent = entry.th32ParentProcessID;
                 let name = from_wide(&entry.szExeFile);
                 seen.insert(pid);
-                // The same pid with the same name and parent is the same process.
+                // The same pid with the same name and parent is the same process. A process that
+                // is just starting may not tell its path yet: that answer is asked again next time.
                 let cached = self
                     .known
                     .get(&pid)
-                    .filter(|(n, p, _, _)| *n == name && *p == parent)
+                    .filter(|(n, p, path, _)| *n == name && *p == parent && path.is_some())
                     .map(|(_, _, path, session)| (path.clone(), *session));
                 let (path, session) = cached.unwrap_or_else(|| {
                     let found = (program_path(pid), session_of(pid));
