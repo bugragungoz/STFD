@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["crates/lockstep-core"]
+members = ["crates/lockstep-core", "src-tauri"]
 
 [workspace.package]
 version = "1.0.0"
