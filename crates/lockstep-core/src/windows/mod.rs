@@ -44,6 +44,20 @@ impl From<WIN32_ERROR> for SysError {
 
 pub type SysResult<T> = Result<T, SysError>;
 
+/// The path with every short (8.3) folder or file name written out in full, the way processes and
+/// shortcuts report it; the path as given when it does not exist.
+pub fn long_path(path: &str) -> String {
+    use windows::core::PCWSTR;
+    use windows::Win32::Storage::FileSystem::GetLongPathNameW;
+    let w = wide(path);
+    let mut buf = vec![0u16; 1024];
+    let n = unsafe { GetLongPathNameW(PCWSTR(w.as_ptr()), Some(&mut buf)) } as usize;
+    if n == 0 || n > buf.len() {
+        return path.to_string();
+    }
+    String::from_utf16_lossy(&buf[..n])
+}
+
 /// A string as a null-terminated UTF-16 buffer.
 pub(crate) fn wide(s: &str) -> Vec<u16> {
     s.encode_utf16().chain(std::iter::once(0)).collect()

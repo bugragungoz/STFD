@@ -69,6 +69,7 @@ pub fn read(path: &str) -> SysResult<(String, String)> {
 
 /// Shortcuts in `folders` (not their subfolders) that open `program` directly.
 pub fn find_for(program: &str, folders: &[String]) -> Vec<String> {
+    let program = super::long_path(program);
     let mut out = Vec::new();
     for folder in folders {
         let Ok(entries) = std::fs::read_dir(folder) else {
@@ -81,7 +82,7 @@ pub fn find_for(program: &str, folders: &[String]) -> Vec<String> {
             }
             let path = path.to_string_lossy().to_string();
             if let Ok((target, _)) = read(&path) {
-                if paths::same(&target, program) {
+                if paths::same(&super::long_path(&target), &program) {
                     out.push(path);
                 }
             }

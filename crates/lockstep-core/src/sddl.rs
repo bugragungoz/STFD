@@ -15,6 +15,18 @@ pub fn entry(sid: &str) -> String {
     format!("(A;;{RIGHTS};;;{sid})")
 }
 
+/// The ways Windows may write the entry back: with the SID, or for the computer's built-in
+/// Administrator (RID 500) and Guest (501) with their abbreviations `LA` and `LG`.
+fn entries(sid: &str) -> Vec<String> {
+    let mut out = vec![entry(sid).to_ascii_uppercase()];
+    if sid.ends_with("-500") {
+        out.push(entry("LA"));
+    } else if sid.ends_with("-501") {
+        out.push(entry("LG"));
+    }
+    out
+}
+
 /// The top-level parts of an SDDL string: (`O`, `G`, `D` or `S`, start, end), where start is just
 /// after the `X:` and end is where the next part begins.
 fn parts(sddl: &str) -> Vec<(u8, usize, usize)> {
@@ -45,11 +57,14 @@ fn parts(sddl: &str) -> Vec<(u8, usize, usize)> {
 
 /// True when the permissions already let `sid` start and stop the service the way Lockstep would.
 pub fn has_entry(sddl: &str, sid: &str) -> bool {
-    let wanted = entry(sid).to_ascii_uppercase();
+    let wanted = entries(sid);
     parts(sddl)
         .into_iter()
         .filter(|(tag, ..)| *tag == b'D')
-        .any(|(_, start, end)| sddl[start..end].to_ascii_uppercase().contains(&wanted))
+        .any(|(_, start, end)| {
+            let dacl = sddl[start..end].to_ascii_uppercase();
+            wanted.iter().any(|w| dacl.contains(w))
+        })
 }
 
 /// The permissions with Lockstep's entry for `sid` added at the end of the DACL. None when nothing
@@ -69,10 +84,12 @@ pub fn with_entry(sddl: &str, sid: &str) -> Option<String> {
 
 /// The permissions without Lockstep's entry for `sid`; None when it is not there.
 pub fn without_entry(sddl: &str, sid: &str) -> Option<String> {
-    let wanted = entry(sid).to_ascii_uppercase();
     let (_, start, end) = parts(sddl).into_iter().find(|(tag, ..)| *tag == b'D')?;
-    let at = sddl[start..end].to_ascii_uppercase().find(&wanted)? + start;
-    Some(format!("{}{}", &sddl[..at], &sddl[at + wanted.len()..]))
+    let dacl = sddl[start..end].to_ascii_uppercase();
+    let (at, len) = entries(sid)
+        .iter()
+        .find_map(|w| dacl.find(w.as_str()).map(|i| (i + start, w.len())))?;
+    Some(format!("{}{}", &sddl[..at], &sddl[at + len..]))
 }
 
 /// True for the SID of a person's account (`S-1-5-21-...`), not a group like Everyone or Users.
@@ -164,5 +181,17 @@ mod tests {
         for sid in ["S-1-1-0", "S-1-5-32-545", "S-1-5-21-1-2", "S-1-5-21-a-b-c-d", "", "BU"] {
             assert!(!is_account_sid(sid), "{sid}");
         }
+    }
+
+    #[test]
+    fn the_built_in_administrator_comes_back_as_la() {
+        let admin = "S-1-5-21-1004336348-1177238915-682003330-500";
+        let added = with_entry(TYPICAL, admin).unwrap();
+        // Windows writes the computer's own Administrator as LA when it prints the permissions.
+        let printed = added.replace(admin, "LA");
+        assert!(has_entry(&printed, admin));
+        assert_eq!(with_entry(&printed, admin), None);
+        assert_eq!(without_entry(&printed, admin).as_deref(), Some(TYPICAL));
+        assert!(!has_entry(&printed, SID), "only for the Administrator");
     }
 }
