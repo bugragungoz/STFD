@@ -19,7 +19,7 @@ export const UI_ICONS: Record<string, string[]> = {
   checkCircle: [C(12, 12, 9), 'M8 12.5l2.7 2.7L16 10'],
   external: ['M14 4h6v6', 'M20 4l-9 9', 'M18 14v4.5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18.5v-11A1.5 1.5 0 0 1 5.5 6H10'],
   apps: [R(4, 4, 7, 7, 2), R(13, 4, 7, 7, 2), R(4, 13, 7, 7, 2), R(13, 13, 7, 7, 2)],
-  // (added) Lockstep
+  // (added) STFD
   plus: ['M12 5v14', 'M5 12h14'],
   play: ['M8 5.5v13l10-6.5z'],
   folder: ['M3.5 7a2 2 0 0 1 2-2h4l2 2.5h7a2 2 0 0 1 2 2V17a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z'],

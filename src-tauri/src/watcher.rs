@@ -5,16 +5,16 @@
 
 use crate::state::{lock, AppStatus, Live, ServiceStatus, Shared};
 use crate::{lang, ui};
-use lockstep_core::model::{App, HistoryEntry, Outcome, Problem, Trigger};
-use lockstep_core::plan::{self, Context, Skip};
-use lockstep_core::session::{Change, Phase, Session};
-use lockstep_core::snapshot::Snapshot;
-use lockstep_core::windows::launch::Opened;
-use lockstep_core::windows::{execute, launch, process, services};
-use lockstep_core::{new_id, now_ms};
 use std::sync::atomic::Ordering;
 use std::sync::Arc;
 use std::time::Duration;
+use stfd_core::model::{App, HistoryEntry, Outcome, Problem, Trigger};
+use stfd_core::plan::{self, Context, Skip};
+use stfd_core::session::{Change, Phase, Session};
+use stfd_core::snapshot::Snapshot;
+use stfd_core::windows::launch::Opened;
+use stfd_core::windows::{execute, launch, process, services};
+use stfd_core::{new_id, now_ms};
 use tauri::AppHandle;
 
 const STEP: Duration = Duration::from_millis(1000);
@@ -316,7 +316,7 @@ fn open_program(shared: &Shared, app: &App) {
         live.session.launch_failed(now_ms());
         live.not_opened = true;
         live.problems.push(Problem {
-            what: lockstep_core::paths::file_name(&app.program).to_string(),
+            what: stfd_core::paths::file_name(&app.program).to_string(),
             code: "launch_failed".into(),
             detail,
         });

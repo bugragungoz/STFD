@@ -61,7 +61,7 @@ test('every page opens without an error', async () => {
 
 test('an app is added in four steps, with its services found in its folder', async () => {
   const { page, context, problems } = await open({ scenario: 'empty' });
-  await page.getByRole('heading', { name: 'How Lockstep works' }).waitFor();
+  await page.getByRole('heading', { name: 'How STFD works' }).waitFor();
   await page.getByRole('button', { name: 'Add your first app' }).click();
 
   // Nothing to go on before a folder is chosen.
@@ -86,7 +86,7 @@ test('an app is added in four steps, with its services found in its folder', asy
 
   await next.click();
   await page.getByText('6 services · 1 folder').waitFor();
-  assert.equal(await page.getByRole('checkbox', { name: 'Put Lockstep\'s shortcut in place of "Multisim 14.3" on the desktop' }).isChecked(), true);
+  assert.equal(await page.getByRole('checkbox', { name: 'Put STFD\'s shortcut in place of "Multisim 14.3" on the desktop' }).isChecked(), true);
   await page.getByText('Windows will ask once').waitFor();
   await page.getByRole('button', { name: 'Add app' }).click();
 
@@ -102,7 +102,7 @@ test('an app is added in four steps, with its services found in its folder', asy
 
 test('a folder that holds unrelated programs is refused', async () => {
   const { page, context } = await open();
-  await page.evaluate(() => (window.__lockstepPick = 'C:\\Program Files'));
+  await page.evaluate(() => (window.__stfdPick = 'C:\\Program Files'));
   await page.getByRole('button', { name: 'Add app' }).click();
   await page.getByRole('button', { name: 'Choose folder' }).click();
   await page.getByText('This folder holds many unrelated programs').waitFor();
@@ -161,7 +161,7 @@ test('leftovers are closed by hand after a look at what goes', async () => {
   await dialog.getByText('ANSYS Licensing Tomcat').waitFor();
   await dialog.getByRole('button', { name: 'Close them' }).click();
   await page.getByText('Stopped 2 services and closed 1 program.').waitFor();
-  await page.getByRole('region', { name: 'Now' }).getByText('Not open. Its shortcut opens it with Lockstep.').waitFor();
+  await page.getByRole('region', { name: 'Now' }).getByText('Not open. Its shortcut opens it with STFD.').waitFor();
   await context.close();
 });
 

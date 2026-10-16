@@ -1,16 +1,16 @@
 //! What the app holds while it runs: the apps and settings (kept on disk by the core's Store), the
 //! sessions being followed, and the last status the watcher computed for the window.
 
-use lockstep_core::model::{App, Problem, Settings};
-use lockstep_core::paths::KnownFolders;
-use lockstep_core::plan::Target;
-use lockstep_core::session::{Phase, Session};
-use lockstep_core::snapshot::SvcState;
-use lockstep_core::store::Store;
 use serde::Serialize;
 use std::collections::{BTreeMap, HashMap};
 use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
 use std::sync::{Mutex, MutexGuard};
+use stfd_core::model::{App, Problem, Settings};
+use stfd_core::paths::KnownFolders;
+use stfd_core::plan::Target;
+use stfd_core::session::{Phase, Session};
+use stfd_core::snapshot::SvcState;
+use stfd_core::store::Store;
 
 /// A session and what went wrong on the way (shown in History when it ends).
 #[derive(Clone, Debug)]
@@ -39,7 +39,7 @@ pub struct ServiceStatus {
 #[serde(rename_all = "camelCase")]
 pub struct AppStatus {
     pub id: String,
-    /// None while the app is not open and Lockstep is not following it.
+    /// None while the app is not open and STFD is not following it.
     pub phase: Option<Phase>,
     pub opened_at: Option<u64>,
     /// Its programs running now.
@@ -63,7 +63,7 @@ pub struct Shared {
     /// Whether the person may start and stop a service (lowercase name), and when that was read.
     pub controllable: Mutex<HashMap<String, (bool, u64)>>,
     pub known: KnownFolders,
-    /// Lockstep's own program, which its shortcuts open.
+    /// STFD's own program, which its shortcuts open.
     pub own_exe: String,
     pub window_open: AtomicBool,
     /// Launches still starting services (no session decision yet).
@@ -113,7 +113,7 @@ impl Shared {
         Ok(Some(out))
     }
 
-    /// True while Lockstep has something to do without its window: an app being followed, a launch
+    /// True while STFD has something to do without its window: an app being followed, a launch
     /// on its way, or watching apps opened another way.
     pub fn busy(&self) -> bool {
         !lock(&self.sessions).is_empty()

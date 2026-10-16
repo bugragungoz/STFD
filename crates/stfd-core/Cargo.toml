@@ -1,6 +1,6 @@
 [package]
-name = "lockstep-core"
-description = "Apps, sessions, cleanup plans and service rights for Lockstep"
+name = "stfd-core"
+description = "Apps, sessions, cleanup plans and service rights for STFD"
 version.workspace = true
 edition.workspace = true
 license.workspace = true

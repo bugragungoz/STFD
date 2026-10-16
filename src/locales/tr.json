@@ -5,11 +5,11 @@
     "apps": "Uygulamalar",
     "history": "Geçmiş",
     "settings": "Ayarlar",
-    "note": "Lockstep programlarınızı ihtiyaç duydukları hizmetlerle açar, geride bıraktıklarını kapatır."
+    "note": "Shut The Fluff Down: STFD programlarınızı ihtiyaç duydukları hizmetlerle açar, geride bıraktıklarını kapatır."
   },
   "apps": {
     "title": "Uygulamalar",
-    "subtitle": "Bunları Lockstep'in kısayoluyla açın: önce hizmetleri başlar, kapandıklarında arkada bıraktıkları da kapanır.",
+    "subtitle": "Bunları STFD'nin kısayoluyla açın: önce hizmetleri başlar, kapandıklarında arkada bıraktıkları da kapanır.",
     "add": "Uygulama ekle",
     "addFirst": "İlk uygulamanızı ekleyin",
     "open": "Aç",
@@ -25,26 +25,26 @@
       "other": "{count} programı hâlâ çalışıyor"
     },
     "unsupported": {
-      "title": "Lockstep Windows'ta çalışır",
+      "title": "STFD Windows'ta çalışır",
       "body": "Bu pencere bir önizleme; burada hiçbir şeyi başlatamaz, durduramaz ya da kapatamaz."
     },
     "empty": {
-      "title": "Lockstep nasıl çalışır",
+      "title": "STFD nasıl çalışır",
       "folder": {
         "title": "Programın kurulu olduğu klasörü seçin",
         "body": "Oradan çalışan her şey ve programı orada duran hizmetler ona aittir."
       },
       "program": {
         "title": "Açılacak programı seçin",
-        "body": "Lockstep klasördeki programları listeler; en olası olan en üsttedir."
+        "body": "STFD klasördeki programları listeler; en olası olan en üsttedir."
       },
       "shortcut": {
-        "title": "Lockstep'in kısayoluyla açın",
+        "title": "STFD'nin kısayoluyla açın",
         "body": "Önce hizmetleri başlar, sonra program açılır. Windows hizmetleri başlatıp durdurmak için bir kez izin ister."
       },
       "close": {
         "title": "Her zamanki gibi kapatın",
-        "body": "Kısa bir beklemeden sonra Lockstep arkada kalan yardımcıları kapatır ve hizmetleri durdurur."
+        "body": "Kısa bir beklemeden sonra STFD arkada kalan yardımcıları kapatır ve hizmetleri durdurur."
       }
     }
   },
@@ -64,19 +64,19 @@
     "kept": "{name}: bu sefer her şey açık kalıyor.",
     "remove": "Kaldır",
     "removed": "{name} kısayollarıyla birlikte kaldırıldı.",
-    "removedServicesLeft": "{name} kaldırıldı. Windows izin vermediği için hizmetleri Lockstep'in verdiği ayarlarda kaldı.",
+    "removedServicesLeft": "{name} kaldırıldı. Windows izin vermediği için hizmetleri STFD'nin verdiği ayarlarda kaldı.",
     "removeConfirm": {
       "title": "{name} kaldırılsın mı?",
-      "body": "Lockstep'in {name} kısayolları silinir, programın kendi kısayolları geri gelir. Programın kendisi kurulu kalır.",
+      "body": "STFD'nin {name} kısayolları silinir, programın kendi kısayolları geri gelir. Programın kendisi kurulu kalır.",
       "services": "Windows, hizmetleri eski hâline döndürmek için bir kez izin ister."
     },
     "status": {
       "title": "Şu an",
-      "idle": "Açık değil. Kısayolu onu Lockstep ile açar.",
+      "idle": "Açık değil. Kısayolu onu STFD ile açar.",
       "idleLeftovers": "Açık değil, ama {programs} programı ve {services} hizmeti hâlâ çalışıyor.",
       "starting": "Hizmetler başlatılıyor, ardından {name} açılacak.",
       "open": "{time} açıldı.",
-      "closing": "{name} kapandı. Yeniden açmazsanız Lockstep kalanları {time} sonra kapatacak.",
+      "closing": "{name} kapandı. Yeniden açmazsanız STFD kalanları {time} sonra kapatacak.",
       "cleaning": "Arkada bıraktıkları kapatılıyor."
     },
     "running": {
@@ -117,7 +117,7 @@
     },
     "shortcuts": {
       "title": "Kısayollar",
-      "subtitle": "Bunlar {name} uygulamasını Lockstep ile açar.",
+      "subtitle": "Bunlar {name} uygulamasını STFD ile açar.",
       "none": "Henüz kısayol yok.",
       "make": "Kısayol oluştur",
       "remake": "Yeniden oluştur",
@@ -134,11 +134,11 @@
       "one": "{count} hizmet bir kez izninizi istiyor",
       "other": "{count} hizmet bir kez izninizi istiyor"
     },
-    "why": "Windows hizmetleri yalnızca yöneticilerin başlatıp durdurmasına izin verir. Lockstep bir kez sorar, sonra bunları size sormadan başlatıp durdurur.",
+    "why": "Windows hizmetleri yalnızca yöneticilerin başlatıp durdurmasına izin verir. STFD bir kez sorar, sonra bunları size sormadan başlatıp durdurur.",
     "give": "İzin ver",
     "asking": "Windows bekleniyor...",
-    "granted": "Lockstep artık hizmetlerini başlatıp durdurabilir.",
-    "declined": "Windows izin vermedi. Lockstep bu hizmetleri henüz başlatıp durduramaz.",
+    "granted": "STFD artık hizmetlerini başlatıp durdurabilir.",
+    "declined": "Windows izin vermedi. STFD bu hizmetleri henüz başlatıp durduramaz.",
     "failed": {
       "one": "{count} hizmet değiştirilemedi; Geçmiş'e bakın.",
       "other": "{count} hizmet değiştirilemedi; Geçmiş'e bakın."
@@ -231,7 +231,7 @@
       },
       "hideNoise": "Güncelleyicileri ve kaldırıcıları gizle",
       "name": "Ad",
-      "nameHint": "Kısayol ve Lockstep bu adı kullanır.",
+      "nameHint": "Kısayol ve STFD bu adı kullanır.",
       "args": "Parametreler (isteğe bağlı)",
       "argsHint": "Program açılırken ona verilir."
     },
@@ -265,11 +265,11 @@
     "finish": {
       "title": "Kısayol ve zamanlama",
       "shortcuts": "Kısayollar",
-      "replace": "Masaüstündeki \"{file}\" yerine Lockstep'in kısayolunu koy",
+      "replace": "Masaüstündeki \"{file}\" yerine STFD'nin kısayolunu koy",
       "public": "\"{file}\" ortak masaüstünde",
-      "publicBody": "Programı Lockstep olmadan açar. Tek kısayol istiyorsanız silin.",
+      "publicBody": "Programı STFD olmadan açar. Tek kısayol istiyorsanız silin.",
       "permission": "Windows bir kez soracak",
-      "permissionBody": "Lockstep'in bu hizmetleri başlatıp durdurması için bir yönetici izni gerekiyor. Sonrasında bir daha sormaz.",
+      "permissionBody": "STFD'nin bu hizmetleri başlatıp durdurması için bir yönetici izni gerekiyor. Sonrasında bir daha sormaz.",
       "services": {
         "one": "{count} hizmet",
         "other": "{count} hizmet"
@@ -293,7 +293,7 @@
       "driveRoot": "Bütün bir sürücü fazla şey içerir: programın kendi klasörünü seçin.",
       "system": "Windows'un kendi klasörleri kullanılamaz.",
       "tooBroad": "Bu klasörde birbiriyle ilgisiz pek çok program var: içindeki programın kendi klasörünü seçin.",
-      "own": "Bu, Lockstep'in kendi klasörü."
+      "own": "Bu, STFD'nin kendi klasörü."
     }
   },
   "shortcut": {
@@ -305,12 +305,12 @@
     "subtitle": "Bir uygulama her kapandığında: neyin başladığı, neyin durduğu ve neyin çalışmadığı.",
     "empty": {
       "title": "Henüz bir şey yok",
-      "body": "Bir uygulama her kapandığında Lockstep'in yaptıkları burada görünür."
+      "body": "Bir uygulama her kapandığında STFD'nin yaptıkları burada görünür."
     },
     "clear": "Geçmişi temizle",
     "clearConfirm": {
       "title": "Geçmiş temizlensin mi?",
-      "body": "Lockstep'in yaptıklarının listesi silinir. Uygulamalar ve ayarları kalır."
+      "body": "STFD'nin yaptıklarının listesi silinir. Uygulamalar ve ayarları kalır."
     },
     "outcome": {
       "cleaned": "Temizlendi",
@@ -319,7 +319,7 @@
       "notOpened": "Açılmadı"
     },
     "trigger": {
-      "shortcut": "Lockstep ile açıldı",
+      "shortcut": "STFD ile açıldı",
       "adopted": "Başka yoldan açıldı",
       "manual": "Sizin kapattığınız"
     },
@@ -378,7 +378,7 @@
       "title": "İzleme"
     },
     "watchAlways": "Başka yoldan açılan uygulamaları da izle",
-    "watchHint": "Başlat menüsü, bir dosya, görev çubuğu: Lockstep bunları da fark eder ve bıraktıklarını kapatır. Bu durumda Windows ile başlar ve sistem tepsisinde kalır.",
+    "watchHint": "Başlat menüsü, bir dosya, görev çubuğu: STFD bunları da fark eder ve bıraktıklarını kapatır. Bu durumda Windows ile başlar ve sistem tepsisinde kalır.",
     "look": {
       "title": "Dil ve görünüm"
     },
@@ -389,7 +389,7 @@
     "light": "Açık",
     "about": {
       "title": "Hakkında",
-      "body": "Lockstep, Ansys Electronics Desktop ve Multisim için yazılmış iki başlatıcı betikten doğdu ve aynısını her program için yapar. MIT lisansı.",
+      "body": "STFD, Shut The Fluff Down'ın kısaltması: fluff, bir programın arkada boşuna çalışır bıraktığı her şey. Ansys Electronics Desktop ve Multisim için yazılmış iki başlatıcı betikten doğdu ve aynısını her program için yapar. MIT lisansı.",
       "github": "GitHub'daki kaynak kodu"
     }
   },
@@ -399,11 +399,11 @@
     "following": "İzleniyor: {names}",
     "demo": "Benzetilmiş Windows",
     "demoHint": "Bu sayfa tarayıcıda uydurma uygulamalarla çalışıyor; hiçbir şeyi değiştirmez.",
-    "version": "Lockstep {version}",
-    "github": "GitHub'da Lockstep"
+    "version": "STFD {version}",
+    "github": "GitHub'da STFD"
   },
   "errors": {
-    "unsupported": "Lockstep Windows'ta çalışır.",
+    "unsupported": "STFD Windows'ta çalışır.",
     "invalid": "Eksik ya da geçersiz bir şey var: {detail}",
     "not_found": "O uygulama artık yok.",
     "folder_problem": "O klasör kullanılamaz: {detail}",

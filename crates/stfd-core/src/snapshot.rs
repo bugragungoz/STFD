@@ -45,7 +45,7 @@ pub struct Service {
     pub state: SvcState,
     /// The process it runs in, 0 when stopped.
     pub pid: u32,
-    /// The services it needs (key names). Filled when Lockstep plans a stop; empty otherwise.
+    /// The services it needs (key names). Filled when STFD plans a stop; empty otherwise.
     #[serde(default)]
     pub depends_on: Vec<String>,
 }

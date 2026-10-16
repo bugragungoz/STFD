@@ -2,11 +2,11 @@
 
 ## 1.0.0
 
-Lockstep replaces the Ansys and Multisim batch scripts with one app for any program.
+STFD replaces the Ansys and Multisim batch scripts with one app for any program.
 
 - Choose a program's folder and the program to open; its services are found in the folder and
   from the same publisher.
-- Lockstep's shortcut starts the services, waits until they run, then opens the program.
+- STFD's shortcut starts the services, waits until they run, then opens the program.
 - After the program closes and a wait (30 seconds by default, set per app), the programs left
   running from its folders are asked to close and ended if they do not, and its services stop.
   Opening the program again during the wait keeps everything running.

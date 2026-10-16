@@ -1,20 +1,20 @@
 //! Setting apps up and taking them down: what the window shows while choosing (the programs in a
 //! folder, the services that belong, the program's own shortcuts), saving with the one elevated
-//! step when services need it, Lockstep's shortcuts, and undoing all of it when an app is removed.
+//! step when services need it, STFD's shortcuts, and undoing all of it when an app is removed.
 
 use crate::commands::{CmdError, Res};
 use crate::state::Shared;
-use lockstep_core::candidates::{self, ExeFile};
-use lockstep_core::elevated::{self, Change, Outcome, Request};
-use lockstep_core::model::{App, Moved, Problem, ServiceRule, StartType};
-use lockstep_core::paths::{self, FolderProblem};
-use lockstep_core::services::{ServiceInfo, Suggested};
-use lockstep_core::windows::{autostart, folders, icon, launch, services, shortcut, version};
-use lockstep_core::{new_id, now_ms};
 use serde::{Deserialize, Serialize};
 use std::path::Path;
+use stfd_core::candidates::{self, ExeFile};
+use stfd_core::elevated::{self, Change, Outcome, Request};
+use stfd_core::model::{App, Moved, Problem, ServiceRule, StartType};
+use stfd_core::paths::{self, FolderProblem};
+use stfd_core::services::{ServiceInfo, Suggested};
+use stfd_core::windows::{autostart, folders, icon, launch, services, shortcut, version};
+use stfd_core::{new_id, now_ms};
 
-/// Keeps the sign-in entry in step with the setting (and with where Lockstep is installed now).
+/// Keeps the sign-in entry in step with the setting (and with where STFD is installed now).
 pub fn sync_autostart(shared: &Shared) {
     if shared.settings().watch_always {
         let _ = autostart::set(&format!("\"{}\" --background", shared.own_exe));
@@ -64,7 +64,7 @@ pub struct FolderInfo {
 }
 
 pub fn inspect_folder(shared: &Shared, folder: &str) -> FolderInfo {
-    let folder = lockstep_core::windows::long_path(folder.trim());
+    let folder = stfd_core::windows::long_path(folder.trim());
     let problem = paths::check_folder(&folder, &shared.known).err();
     if problem.is_some() || !Path::new(&folder).is_dir() {
         return FolderInfo {
@@ -94,7 +94,7 @@ pub struct ProgramInfo {
 }
 
 pub fn inspect_program(path: &str) -> Res<ProgramInfo> {
-    let path = lockstep_core::windows::long_path(path.trim());
+    let path = stfd_core::windows::long_path(path.trim());
     if !Path::new(&path).is_file() || !path.to_lowercase().ends_with(".exe") {
         return Err(CmdError::new("invalid", "not a program"));
     }
@@ -122,7 +122,7 @@ pub struct ServiceChoice {
 pub fn list_services(shared: &Shared, folders: &[String], program: &str) -> Res<ServiceChoice> {
     let mut all = services::list(&shared.known).map_err(|e| CmdError::new("services_failed", e))?;
     let company = version::strings(program).company;
-    let related = lockstep_core::services::related(&all, folders, company.as_deref(), &shared.known);
+    let related = stfd_core::services::related(&all, folders, company.as_deref(), &shared.known);
     all.sort_by_key(|s| s.display.to_lowercase());
     Ok(ServiceChoice { company, related, all })
 }
@@ -131,7 +131,7 @@ pub fn list_services(shared: &Shared, folders: &[String], program: &str) -> Res<
 #[serde(rename_all = "camelCase")]
 pub struct FoundShortcut {
     pub path: String,
-    /// On the person's own desktop: Lockstep may move it aside. The shared desktop needs an
+    /// On the person's own desktop: STFD may move it aside. The shared desktop needs an
     /// administrator.
     pub movable: bool,
 }
@@ -192,7 +192,7 @@ pub struct Draft {
     pub desktop: bool,
     #[serde(default)]
     pub start_menu: bool,
-    /// The program's own shortcuts to move aside for Lockstep's.
+    /// The program's own shortcuts to move aside for STFD's.
     #[serde(default)]
     pub replace: Vec<String>,
 }
@@ -226,7 +226,7 @@ fn build(shared: &Shared, draft: &Draft) -> Res<App> {
     if name.is_empty() || name.chars().count() > 80 {
         return Err(CmdError::new("invalid", "name"));
     }
-    let program = lockstep_core::windows::long_path(draft.program.trim());
+    let program = stfd_core::windows::long_path(draft.program.trim());
     if !Path::new(&program).is_file() || !program.to_lowercase().ends_with(".exe") {
         return Err(CmdError::new("invalid", "program"));
     }
@@ -235,7 +235,7 @@ fn build(shared: &Shared, draft: &Draft) -> Res<App> {
     }
     let mut folders_ok = Vec::new();
     for f in &draft.folders {
-        let f = lockstep_core::windows::long_path(f.trim());
+        let f = stfd_core::windows::long_path(f.trim());
         if let Err(problem) = paths::check_folder(&f, &shared.known) {
             return Err(CmdError::new("folder_problem", format!("{f}: {problem:?}")));
         }
@@ -294,7 +294,7 @@ fn elevate(shared: &Shared, changes: Vec<Change>) -> Result<Vec<Outcome>, Permis
     let result = dir.join(format!("elevated-{}.json", new_id()));
     let args = format!("--elevated {} \"{}\"", elevated::encode(&request), result.display());
     let code = launch::run_elevated(&shared.own_exe, &args).map_err(|_| Permission::Failed)?;
-    let outcomes: Vec<Outcome> = lockstep_core::store::read(&result);
+    let outcomes: Vec<Outcome> = stfd_core::store::read(&result);
     let _ = std::fs::remove_file(&result);
     match code {
         None => Err(Permission::Declined),
@@ -450,7 +450,7 @@ fn is_ours(shared: &Shared, link: &str, id: &str) -> bool {
         .is_ok_and(|(target, args)| paths::same(&target, &shared.own_exe) && args.trim() == format!("--run {id}"))
 }
 
-/// Makes Lockstep's shortcuts for the app (again): on the desktop and/or in the Start menu, after
+/// Makes STFD's shortcuts for the app (again): on the desktop and/or in the Start menu, after
 /// moving the program's own desktop shortcuts in `replace` aside.
 pub fn make_shortcuts(
     shared: &Shared,
@@ -497,7 +497,7 @@ pub fn make_shortcuts(
     if start_menu {
         targets.extend(folders::start_menu());
     }
-    let description = format!("Opens {} with Lockstep", app.name);
+    let description = format!("Opens {} with STFD", app.name);
     let arguments = format!("--run {}", app.id);
     let working_dir = paths::parent(&app.program).unwrap_or("").to_string();
     for folder in targets {
@@ -510,7 +510,7 @@ pub fn make_shortcuts(
             path = format!(
                 "{}\\{}",
                 folder.trim_end_matches('\\'),
-                paths::shortcut_file_name(&format!("{} (Lockstep)", app.name))
+                paths::shortcut_file_name(&format!("{} (STFD)", app.name))
             );
         }
         let link = shortcut::Link {
@@ -549,7 +549,7 @@ pub struct RemoveOutcome {
     pub problems: Vec<Problem>,
 }
 
-/// Removes an app: its shortcuts go, the program's own come back, and what Lockstep changed on its
+/// Removes an app: its shortcuts go, the program's own come back, and what STFD changed on its
 /// services is put back unless another app still uses them.
 pub fn remove(shared: &Shared, id: &str) -> Res<RemoveOutcome> {
     let app = shared.app(id).ok_or_else(|| CmdError::new("not_found", id))?;

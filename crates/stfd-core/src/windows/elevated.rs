@@ -1,4 +1,4 @@
-//! The elevated step itself: Lockstep started with administrator rights and a request on its
+//! The elevated step itself: STFD started with administrator rights and a request on its
 //! command line changes the named services, writes what it did to the result file and exits.
 
 use super::{launch, services, SysError};
@@ -61,7 +61,7 @@ pub fn run(request: &Request) -> Vec<Outcome> {
     request.services.iter().map(|c| apply(&request.sid, c)).collect()
 }
 
-/// `lockstep.exe --elevated <hex request> <result file>`: the process exit code. 0 done (each
+/// `stfd.exe --elevated <hex request> <result file>`: the process exit code. 0 done (each
 /// service's outcome is in the file), 2 the request is not valid, 3 not elevated, 4 the result could
 /// not be written.
 pub fn main(args: &[String]) -> i32 {

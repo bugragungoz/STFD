@@ -1,17 +1,17 @@
-//! The window, the tray icon and notifications. Lockstep runs without its window while it follows
+//! The window, the tray icon and notifications. STFD runs without its window while it follows
 //! an app (the shortcut starts it that way); the window opens on demand and closes for real, so a
 //! closed window costs nothing.
 
 use crate::lang;
 use crate::state::{lock, Shared};
-use lockstep_core::session::Phase;
 use std::sync::atomic::Ordering;
 use std::sync::Arc;
+use stfd_core::session::Phase;
 use tauri::menu::{Menu, MenuItem};
 use tauri::tray::{MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent};
 use tauri::{AppHandle, Manager, WebviewWindowBuilder};
 
-const TRAY: &str = "lockstep";
+const TRAY: &str = "stfd";
 
 /// Shows the window, making it if it is not there.
 pub fn show_window(app: &AppHandle) {
@@ -39,7 +39,7 @@ pub fn create_tray(app: &AppHandle) -> tauri::Result<()> {
     let mut builder = TrayIconBuilder::with_id(TRAY)
         .menu(&menu)
         .show_menu_on_left_click(false)
-        .tooltip("Lockstep")
+        .tooltip("STFD")
         .on_menu_event(|app, event| match event.id.as_ref() {
             "open" => show_window(app),
             "quit" => app.exit(0),
@@ -63,7 +63,7 @@ pub fn create_tray(app: &AppHandle) -> tauri::Result<()> {
     Ok(())
 }
 
-/// Shows the tray icon while Lockstep works without being asked, with what it follows.
+/// Shows the tray icon while STFD works without being asked, with what it follows.
 pub fn update_tray(app: &AppHandle, shared: &Shared, now: u64) {
     let Some(tray) = app.tray_by_id(TRAY) else { return };
     let settings = shared.settings();

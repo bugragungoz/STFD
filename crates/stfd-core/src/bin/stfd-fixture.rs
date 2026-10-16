@@ -1,16 +1,16 @@
-//! A stand-in program for the Windows system tests (crates/lockstep-core/tests): it plays an app's
+//! A stand-in program for the Windows system tests (crates/stfd-core/tests): it plays an app's
 //! main program, a leftover helper, a stubborn program or a service.
 //!
-//!   lockstep-fixture window      a window that closes when asked
-//!   lockstep-fixture stubborn    a window that ignores being asked to close
-//!   lockstep-fixture background  no window, runs until ended
-//!   lockstep-fixture service     a Windows service (run by the Service Control Manager)
-//!   lockstep-fixture exit <n>    exits at once with code n
+//!   stfd-fixture window      a window that closes when asked
+//!   stfd-fixture stubborn    a window that ignores being asked to close
+//!   stfd-fixture background  no window, runs until ended
+//!   stfd-fixture service     a Windows service (run by the Service Control Manager)
+//!   stfd-fixture exit <n>    exits at once with code n
 #![cfg_attr(windows, windows_subsystem = "windows")]
 
 #[cfg(not(windows))]
 fn main() {
-    eprintln!("lockstep-fixture runs on Windows only");
+    eprintln!("stfd-fixture runs on Windows only");
 }
 
 #[cfg(windows)]
@@ -67,14 +67,14 @@ mod fixture {
             let class = WNDCLASSW {
                 lpfnWndProc: Some(proc),
                 hInstance: instance.into(),
-                lpszClassName: w!("LockstepFixture"),
+                lpszClassName: w!("StfdFixture"),
                 ..Default::default()
             };
             RegisterClassW(&class);
             CreateWindowExW(
                 WINDOW_EX_STYLE(0),
-                w!("LockstepFixture"),
-                w!("Lockstep fixture"),
+                w!("StfdFixture"),
+                w!("STFD fixture"),
                 WS_OVERLAPPEDWINDOW | WS_VISIBLE,
                 CW_USEDEFAULT,
                 CW_USEDEFAULT,

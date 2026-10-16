@@ -1,4 +1,4 @@
-//! What Lockstep keeps: the apps, the settings and the history of what it did.
+//! What STFD keeps: the apps, the settings and the history of what it did.
 
 use crate::paths;
 use crate::snapshot::Proc;
@@ -15,14 +15,14 @@ pub enum StartType {
     Disabled,
 }
 
-/// What Lockstep changed on a service, so removing the app can put it back.
+/// What STFD changed on a service, so removing the app can put it back.
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ServiceOriginal {
-    /// The start type before Lockstep set it to Manual; None when Lockstep left it alone.
+    /// The start type before STFD set it to Manual; None when STFD left it alone.
     #[serde(default)]
     pub start_type: Option<StartType>,
-    /// Lockstep let this person start and stop the service (removing the app takes that entry out
+    /// STFD let this person start and stop the service (removing the app takes that entry out
     /// again, and nothing else).
     #[serde(default)]
     pub granted: bool,
@@ -50,7 +50,7 @@ pub struct ServiceRule {
     pub original: ServiceOriginal,
 }
 
-/// A shortcut of the program that Lockstep moved aside to put its own in place.
+/// A shortcut of the program that STFD moved aside to put its own in place.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Moved {
@@ -61,10 +61,10 @@ pub struct Moved {
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Shortcuts {
-    /// Shortcut files Lockstep made for the app.
+    /// Shortcut files STFD made for the app.
     #[serde(default)]
     pub made: Vec<String>,
-    /// The program's own shortcuts Lockstep moved aside.
+    /// The program's own shortcuts STFD moved aside.
     #[serde(default)]
     pub moved: Vec<Moved>,
 }
@@ -77,7 +77,7 @@ fn default_services_delay() -> u32 {
     3
 }
 
-/// An app Lockstep opens: a program, the folders whose programs and services belong to it, and
+/// An app STFD opens: a program, the folders whose programs and services belong to it, and
 /// what to do around it.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -187,10 +187,10 @@ pub struct Settings {
     pub wait_seconds: u32,
     /// Seconds a program gets to close on its own before it is ended.
     pub polite_seconds: u32,
-    /// A Windows notification after Lockstep closed something.
+    /// A Windows notification after STFD closed something.
     pub notify: bool,
     /// Watch the apps even when they are opened another way (Start menu, a file, the taskbar); keeps
-    /// Lockstep running in the tray and starting with Windows.
+    /// STFD running in the tray and starting with Windows.
     pub watch_always: bool,
     pub language: String,
     pub theme: String,
@@ -228,9 +228,9 @@ impl Settings {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub enum Trigger {
-    /// Lockstep's shortcut (or Open in the window).
+    /// STFD's shortcut (or Open in the window).
     Shortcut,
-    /// Opened another way, and noticed because Lockstep watches always.
+    /// Opened another way, and noticed because STFD watches always.
     Adopted,
     /// "Close leftovers now" in the window.
     Manual,
@@ -240,7 +240,7 @@ pub enum Trigger {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub enum Outcome {
-    /// Lockstep closed what was left.
+    /// STFD closed what was left.
     Cleaned,
     /// Nothing was left to close.
     Nothing,
@@ -360,7 +360,7 @@ mod tests {
         assert!(app.is_open(std::slice::from_ref(&main), 1));
         assert!(app.is_open(&[windowed_helper], 1));
         assert!(!app.is_open(&[background, kept_window, other], 1));
-        assert!(!app.is_open(&[main], 10), "Lockstep itself does not count");
+        assert!(!app.is_open(&[main], 10), "STFD itself does not count");
     }
 
     #[test]

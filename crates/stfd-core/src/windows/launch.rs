@@ -1,4 +1,4 @@
-//! Opening programs: the app's program the way Explorer would, and Lockstep itself with
+//! Opening programs: the app's program the way Explorer would, and STFD itself with
 //! administrator rights for the one step that needs them.
 
 use super::{wide, SysError, SysResult};

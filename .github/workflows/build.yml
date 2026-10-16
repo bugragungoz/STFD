@@ -68,12 +68,12 @@ jobs:
       - name: The built program refuses an elevated request it cannot read
         shell: pwsh
         run: |
-          $p = Start-Process -FilePath target\release\lockstep.exe -ArgumentList '--elevated', 'not-a-request', 'result.json' -Wait -PassThru
+          $p = Start-Process -FilePath target\release\stfd.exe -ArgumentList '--elevated', 'not-a-request', 'result.json' -Wait -PassThru
           if ($p.ExitCode -ne 2) { throw "exit code $($p.ExitCode), expected 2" }
 
       - uses: actions/upload-artifact@v5
         with:
-          name: Lockstep-installers
+          name: STFD-installers
           path: |
             target/release/bundle/nsis/*.exe
             target/release/bundle/msi/*.msi
@@ -92,7 +92,7 @@ jobs:
 
       - uses: actions/download-artifact@v5
         with:
-          name: Lockstep-installers
+          name: STFD-installers
           path: installers
 
       - name: Publish the release if this version has none
@@ -114,4 +114,4 @@ jobs:
             found { print }
           ' CHANGELOG.md > notes.md
           # The artifact keeps the bundle folders: installers/nsis/*.exe and installers/msi/*.msi.
-          gh release create "$tag" installers/*/* --target "$GITHUB_SHA" --title "Lockstep $tag" --notes-file notes.md --repo "$GITHUB_REPOSITORY"
+          gh release create "$tag" installers/*/* --target "$GITHUB_SHA" --title "STFD $tag" --notes-file notes.md --repo "$GITHUB_REPOSITORY"

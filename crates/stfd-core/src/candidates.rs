@@ -224,7 +224,7 @@ mod tests {
 
     #[test]
     fn scanning_a_folder_finds_its_programs() {
-        let dir = std::env::temp_dir().join(format!("lockstep-scan-{}", crate::new_id()));
+        let dir = std::env::temp_dir().join(format!("stfd-scan-{}", crate::new_id()));
         std::fs::create_dir_all(dir.join("bin").join("deep")).unwrap();
         let mut gui = vec![0u8; 512];
         gui[0..2].copy_from_slice(b"MZ");

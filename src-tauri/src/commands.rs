@@ -1,9 +1,9 @@
 //! The commands the window calls. Errors carry a stable code the window translates.
 
 use crate::state::{lock, AppStatus, Shared};
-use lockstep_core::model::{App, HistoryEntry, Settings};
 use serde::Serialize;
 use std::sync::Arc;
+use stfd_core::model::{App, HistoryEntry, Settings};
 use tauri::{AppHandle, State};
 
 #[derive(Debug, Serialize)]
@@ -25,7 +25,7 @@ pub type Res<T> = Result<T, CmdError>;
 
 #[cfg(not(windows))]
 fn unsupported<T>() -> Res<T> {
-    Err(CmdError::new("unsupported", "Lockstep runs on Windows"))
+    Err(CmdError::new("unsupported", "STFD runs on Windows"))
 }
 
 /// Runs blocking work (reading every service, scanning a folder, the elevated step) off the
@@ -40,7 +40,7 @@ async fn blocking<T: Send + 'static>(f: impl FnOnce() -> Res<T> + Send + 'static
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Snapshot {
-    /// False on systems other than Windows, where Lockstep does nothing.
+    /// False on systems other than Windows, where STFD does nothing.
     pub supported: bool,
     pub now: u64,
     pub apps: Vec<App>,
@@ -51,7 +51,7 @@ pub struct Snapshot {
 pub fn get_state(shared: State<'_, Arc<Shared>>) -> Snapshot {
     Snapshot {
         supported: cfg!(windows),
-        now: lockstep_core::now_ms(),
+        now: stfd_core::now_ms(),
         apps: shared.apps(),
         status: lock(&shared.status).clone(),
     }

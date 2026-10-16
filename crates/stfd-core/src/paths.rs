@@ -104,7 +104,7 @@ pub fn shortcut_file_name(name: &str) -> String {
     format!("{}.lnk", if cleaned.is_empty() { "App" } else { cleaned })
 }
 
-/// The folders of this Windows that matter for what Lockstep may watch and close.
+/// The folders of this Windows that matter for what STFD may watch and close.
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct KnownFolders {
@@ -124,7 +124,7 @@ pub struct KnownFolders {
     pub app_data: Vec<String>,
     /// The user's desktop and the public one.
     pub desktops: Vec<String>,
-    /// Lockstep's own install folder.
+    /// STFD's own install folder.
     pub own: String,
 }
 
@@ -140,7 +140,7 @@ pub enum FolderProblem {
     System,
     /// A folder that holds many unrelated programs, such as Program Files itself.
     TooBroad,
-    /// Lockstep's own folder.
+    /// STFD's own folder.
     Own,
 }
 
@@ -253,7 +253,7 @@ mod tests {
                 "C:\\Users\\bugra\\AppData\\Local".into(),
             ],
             desktops: vec!["C:\\Users\\bugra\\Desktop".into(), "C:\\Users\\Public\\Desktop".into()],
-            own: "C:\\Program Files\\Lockstep".into(),
+            own: "C:\\Program Files\\STFD".into(),
         }
     }
 
@@ -335,7 +335,7 @@ mod tests {
             check_folder("C:\\Users\\bugra\\Desktop", &k),
             Err(FolderProblem::TooBroad)
         );
-        assert_eq!(check_folder("C:\\Program Files\\Lockstep", &k), Err(FolderProblem::Own));
+        assert_eq!(check_folder("C:\\Program Files\\STFD", &k), Err(FolderProblem::Own));
     }
 
     #[test]

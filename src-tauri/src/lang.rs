@@ -1,4 +1,4 @@
-//! The few words Lockstep shows outside its window (notifications and the tray), in English or
+//! The few words STFD shows outside its window (notifications and the tray), in English or
 //! Turkish like the window.
 
 #[derive(Clone, Copy, PartialEq, Eq)]
@@ -42,8 +42,8 @@ fn system() -> Lang {
 impl Lang {
     pub fn open(self) -> &'static str {
         match self {
-            Lang::En => "Open Lockstep",
-            Lang::Tr => "Lockstep'i aç",
+            Lang::En => "Open STFD",
+            Lang::Tr => "STFD'yi aç",
         }
     }
 
@@ -54,9 +54,9 @@ impl Lang {
         }
     }
 
-    /// The tray's tooltip: what Lockstep follows now.
+    /// The tray's tooltip: what STFD follows now.
     pub fn tooltip(self, open: &[String], closing: &[(String, u64)]) -> String {
-        let mut lines = vec!["Lockstep".to_string()];
+        let mut lines = vec!["STFD".to_string()];
         for (name, seconds) in closing {
             lines.push(match self {
                 Lang::En => format!("{name}: closing the rest in {seconds} s"),
@@ -148,11 +148,11 @@ impl Lang {
         match self {
             Lang::En => (
                 format!("{app} did not open"),
-                "Lockstep stopped what it had started for it.".into(),
+                "STFD stopped what it had started for it.".into(),
             ),
             Lang::Tr => (
                 format!("{app} açılmadı"),
-                "Lockstep onun için başlattıklarını durdurdu.".into(),
+                "STFD onun için başlattıklarını durdurdu.".into(),
             ),
         }
     }
@@ -204,10 +204,10 @@ mod tests {
 
     #[test]
     fn the_tooltip_lists_what_is_followed_and_stays_short() {
-        assert_eq!(Lang::En.tooltip(&[], &[]), "Lockstep\nWatching your apps");
+        assert_eq!(Lang::En.tooltip(&[], &[]), "STFD\nWatching your apps");
         assert_eq!(
             Lang::En.tooltip(&["Multisim".into()], &[("Ansys".into(), 25)]),
-            "Lockstep\nAnsys: closing the rest in 25 s\nFollowing Multisim"
+            "STFD\nAnsys: closing the rest in 25 s\nFollowing Multisim"
         );
         let many: Vec<String> = (0..40).map(|i| format!("App number {i}")).collect();
         assert!(Lang::Tr.tooltip(&many, &[]).chars().count() <= 120);

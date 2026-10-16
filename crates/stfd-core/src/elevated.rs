@@ -1,5 +1,5 @@
 //! The one step that needs administrator rights: letting the person start and stop an app's
-//! services, and setting them to start by hand. Lockstep runs itself elevated with a request on its
+//! services, and setting them to start by hand. STFD runs itself elevated with a request on its
 //! command line (`--elevated <hex> <result file>`); Windows asks the person first. This module is
 //! the request and its checks; `windows::elevated` carries it out.
 

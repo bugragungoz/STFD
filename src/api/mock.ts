@@ -3,7 +3,7 @@
  * the services the owner's old scripts started, programs that open and close on their own, and the
  * waits and cleanups the real app does. `?fast` shortens every wait (UI tests, screenshots);
  * `?scenario=empty` starts without apps, `?scenario=closing` with Multisim just closed.
- * Pickers return `window.__lockstepPick` when a test set it.
+ * Pickers return `window.__stfdPick` when a test set it.
  */
 import type { Api } from './index';
 import { AppError } from './invoke';
@@ -276,8 +276,8 @@ const PROGRAMS: Record<string, [string, string | null, boolean][]> = {
 };
 
 function pick(): string | null {
-  const w = window as unknown as { __lockstepPick?: string | null };
-  const v = w.__lockstepPick;
+  const w = window as unknown as { __stfdPick?: string | null };
+  const v = w.__stfdPick;
   return v === undefined ? NI : v;
 }
 
@@ -347,7 +347,7 @@ export const mockApi: Api = {
       waitSeconds: draft.waitSeconds,
       servicesDelaySeconds: draft.servicesDelaySeconds,
       closePrograms: draft.closePrograms,
-      shortcuts: { made: draft.desktop ? [`C:\\Users\\Bugra\\Desktop\\${draft.name.trim()}.lnk`] : [], moved: draft.replace.map((from) => ({ from, to: `C:\\Users\\Bugra\\AppData\\Local\\com.bugragungoz.lockstep\\shortcuts\\${id}\\${file(from)}` })) },
+      shortcuts: { made: draft.desktop ? [`C:\\Users\\Bugra\\Desktop\\${draft.name.trim()}.lnk`] : [], moved: draft.replace.map((from) => ({ from, to: `C:\\Users\\Bugra\\AppData\\Local\\com.bugragungoz.stfd\\shortcuts\\${id}\\${file(from)}` })) },
     };
     for (const s of draft.services) {
       const real = services.find((x) => x.name === s.name);
@@ -426,8 +426,8 @@ export const mockApi: Api = {
   },
   pickFolder: () => delay(pick(), 100),
   async pickProgram() {
-    const w = window as unknown as { __lockstepPickProgram?: string | null };
-    return delay(w.__lockstepPickProgram ?? null, 100);
+    const w = window as unknown as { __stfdPickProgram?: string | null };
+    return delay(w.__stfdPickProgram ?? null, 100);
   },
   async openUrl(url) {
     window.open(url, '_blank', 'noopener');

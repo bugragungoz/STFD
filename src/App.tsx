@@ -81,7 +81,7 @@ export function App() {
       <nav class="sidebar" aria-label={t('nav.label')}>
         <div class="wordmark">
           <Mark />
-          <span class="wordmark-text">Lockstep</span>
+          <span class="wordmark-text">STFD</span>
         </div>
         <div class="nav">
           {NAV.map((item) => {

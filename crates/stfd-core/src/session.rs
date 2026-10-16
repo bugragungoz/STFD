@@ -4,7 +4,7 @@
 use crate::model::Trigger;
 use serde::Serialize;
 
-/// How long a launched program may take to show up before Lockstep treats it as closed.
+/// How long a launched program may take to show up before STFD treats it as closed.
 pub const LAUNCH_TIMEOUT_MS: u64 = 120_000;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
@@ -47,14 +47,14 @@ pub struct Session {
     pub phase: Phase,
     /// When the program was first seen open.
     pub opened_at: Option<u64>,
-    /// Services Lockstep started for this session (display names).
+    /// Services STFD started for this session (display names).
     pub started: Vec<String>,
     /// Programs of the app seen running during the session (paths).
     pub seen: Vec<String>,
 }
 
 impl Session {
-    /// Opened by Lockstep: services start, then the program.
+    /// Opened by STFD: services start, then the program.
     pub fn launched(app_id: &str, now: u64) -> Self {
         Self {
             app_id: app_id.to_string(),

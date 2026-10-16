@@ -35,7 +35,7 @@ pub fn start_menu() -> Option<String> {
     known(&FOLDERID_Programs)
 }
 
-/// The folders Lockstep must know about. `own` is Lockstep's install folder.
+/// The folders STFD must know about. `own` is STFD's install folder.
 pub fn all(own: &str) -> KnownFolders {
     let some = |id: &GUID| known(id).unwrap_or_default();
     KnownFolders {

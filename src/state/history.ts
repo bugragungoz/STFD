@@ -1,4 +1,4 @@
-/** What Lockstep did, newest first. */
+/** What STFD did, newest first. */
 import { signal } from '@preact/signals';
 import { api } from '../api';
 import type { HistoryEntry } from '../api/types';

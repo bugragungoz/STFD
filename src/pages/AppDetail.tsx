@@ -42,7 +42,7 @@ function inside(path: string, folder: string): boolean {
   return p === f || p.startsWith(f + '\\');
 }
 
-/** True when Lockstep closes this program after the app (the core's App::owns). */
+/** True when STFD closes this program after the app (the core's App::owns). */
 export function closes(app: App, path: string): boolean {
   const same = (a: string) => a.toLowerCase() === path.toLowerCase();
   if (app.keep.some(same)) return false;

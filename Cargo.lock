@@ -1974,33 +1974,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "lockstep"
-version = "1.0.0"
-dependencies = [
- "lockstep-core",
- "serde",
- "serde_json",
- "tauri",
- "tauri-build",
- "tauri-plugin-dialog",
- "tauri-plugin-notification",
- "tauri-plugin-opener",
- "tauri-plugin-single-instance",
- "windows",
-]
-
-[[package]]
-name = "lockstep-core"
-version = "1.0.0"
-dependencies = [
- "png 0.18.1",
- "serde",
- "serde_json",
- "thiserror 2.0.21",
- "windows",
-]
-
-[[package]]
 name = "log"
 version = "0.4.34"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3316,6 +3289,33 @@ name = "static_vcruntime"
 version = "3.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ff7589a1859b09232522bb9edf076ca7fcf14ded96685d3fa629db73023ffbb7"
+
+[[package]]
+name = "stfd"
+version = "1.0.0"
+dependencies = [
+ "serde",
+ "serde_json",
+ "stfd-core",
+ "tauri",
+ "tauri-build",
+ "tauri-plugin-dialog",
+ "tauri-plugin-notification",
+ "tauri-plugin-opener",
+ "tauri-plugin-single-instance",
+ "windows",
+]
+
+[[package]]
+name = "stfd-core"
+version = "1.0.0"
+dependencies = [
+ "png 0.18.1",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.21",
+ "windows",
+]
 
 [[package]]
 name = "string_cache"

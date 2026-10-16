@@ -1,4 +1,4 @@
-//! Shortcut (.lnk) files: making Lockstep's, and finding the ones that open a program directly.
+//! Shortcut (.lnk) files: making STFD's, and finding the ones that open a program directly.
 
 use super::{from_wide, SysError, SysResult};
 use crate::paths;

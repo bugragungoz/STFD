@@ -5,11 +5,11 @@
     "apps": "Apps",
     "history": "History",
     "settings": "Settings",
-    "note": "Lockstep opens your programs with the services they need, and closes what they leave behind."
+    "note": "Shut The Fluff Down: STFD opens your programs with the services they need, and closes what they leave behind."
   },
   "apps": {
     "title": "Apps",
-    "subtitle": "Open these through Lockstep's shortcut: their services start first, and what they leave running closes after them.",
+    "subtitle": "Open these through STFD's shortcut: their services start first, and what they leave running closes after them.",
     "add": "Add app",
     "addFirst": "Add your first app",
     "open": "Open",
@@ -25,26 +25,26 @@
       "other": "{count} programs still running"
     },
     "unsupported": {
-      "title": "Lockstep works on Windows",
+      "title": "STFD works on Windows",
       "body": "This window is a preview; it cannot start, stop or close anything here."
     },
     "empty": {
-      "title": "How Lockstep works",
+      "title": "How STFD works",
       "folder": {
         "title": "Choose the folder a program is installed in",
         "body": "Everything that runs from there, and the services whose programs live there, belong to it."
       },
       "program": {
         "title": "Choose the program to open",
-        "body": "Lockstep lists the programs in the folder, the likely one first."
+        "body": "STFD lists the programs in the folder, the likely one first."
       },
       "shortcut": {
-        "title": "Open it from Lockstep's shortcut",
+        "title": "Open it from STFD's shortcut",
         "body": "Its services start first, then the program. Windows asks once for permission to start and stop them."
       },
       "close": {
         "title": "Close it as usual",
-        "body": "After a short wait, Lockstep closes the helpers it left running and stops its services."
+        "body": "After a short wait, STFD closes the helpers it left running and stops its services."
       }
     }
   },
@@ -64,19 +64,19 @@
     "kept": "{name}: everything stays running this time.",
     "remove": "Remove",
     "removed": "{name} was removed, with its shortcuts.",
-    "removedServicesLeft": "{name} was removed. Its services keep the settings Lockstep gave them, because Windows did not get permission to put them back.",
+    "removedServicesLeft": "{name} was removed. Its services keep the settings STFD gave them, because Windows did not get permission to put them back.",
     "removeConfirm": {
       "title": "Remove {name}?",
-      "body": "Lockstep's shortcuts for {name} are deleted and the program's own shortcuts come back. The program itself stays installed.",
+      "body": "STFD's shortcuts for {name} are deleted and the program's own shortcuts come back. The program itself stays installed.",
       "services": "Windows asks once for permission to put its services back the way they were."
     },
     "status": {
       "title": "Now",
-      "idle": "Not open. Its shortcut opens it with Lockstep.",
+      "idle": "Not open. Its shortcut opens it with STFD.",
       "idleLeftovers": "Not open, but {programs} of its programs and {services} of its services are still running.",
       "starting": "Starting the services, then {name}.",
       "open": "Opened {time}.",
-      "closing": "{name} closed. Lockstep closes the rest in {time}, unless you open it again.",
+      "closing": "{name} closed. STFD closes the rest in {time}, unless you open it again.",
       "cleaning": "Closing what it left running."
     },
     "running": {
@@ -117,7 +117,7 @@
     },
     "shortcuts": {
       "title": "Shortcuts",
-      "subtitle": "These open {name} through Lockstep.",
+      "subtitle": "These open {name} through STFD.",
       "none": "No shortcuts yet.",
       "make": "Make shortcuts",
       "remake": "Make them again",
@@ -134,11 +134,11 @@
       "one": "{count} service needs your permission once",
       "other": "{count} services need your permission once"
     },
-    "why": "Windows lets only administrators start and stop services. Lockstep asks once, then starts and stops these for you without asking again.",
+    "why": "Windows lets only administrators start and stop services. STFD asks once, then starts and stops these for you without asking again.",
     "give": "Give permission",
     "asking": "Waiting for Windows...",
-    "granted": "Lockstep may now start and stop its services.",
-    "declined": "Windows did not get permission. Lockstep cannot start or stop these services yet.",
+    "granted": "STFD may now start and stop its services.",
+    "declined": "Windows did not get permission. STFD cannot start or stop these services yet.",
     "failed": {
       "one": "{count} service could not be changed; see History.",
       "other": "{count} services could not be changed; see History."
@@ -231,7 +231,7 @@
       },
       "hideNoise": "Hide updaters and uninstallers",
       "name": "Name",
-      "nameHint": "The shortcut and Lockstep use this name.",
+      "nameHint": "The shortcut and STFD use this name.",
       "args": "Arguments (optional)",
       "argsHint": "Passed to the program when it opens."
     },
@@ -265,11 +265,11 @@
     "finish": {
       "title": "Shortcut and timing",
       "shortcuts": "Shortcuts",
-      "replace": "Put Lockstep's shortcut in place of \"{file}\" on the desktop",
+      "replace": "Put STFD's shortcut in place of \"{file}\" on the desktop",
       "public": "\"{file}\" is on the shared desktop",
-      "publicBody": "It opens the program without Lockstep. Delete it if you want only one.",
+      "publicBody": "It opens the program without STFD. Delete it if you want only one.",
       "permission": "Windows will ask once",
-      "permissionBody": "Lockstep needs an administrator's permission to start and stop these services. After that it does not ask again.",
+      "permissionBody": "STFD needs an administrator's permission to start and stop these services. After that it does not ask again.",
       "services": {
         "one": "{count} service",
         "other": "{count} services"
@@ -293,7 +293,7 @@
       "driveRoot": "A whole drive holds too much: choose the program's own folder.",
       "system": "Windows' own folders cannot be used.",
       "tooBroad": "This folder holds many unrelated programs: choose the program's own folder inside it.",
-      "own": "This is Lockstep's own folder."
+      "own": "This is STFD's own folder."
     }
   },
   "shortcut": {
@@ -305,12 +305,12 @@
     "subtitle": "Every time an app closed: what started, what stopped, and what did not work.",
     "empty": {
       "title": "Nothing yet",
-      "body": "Each time an app closes, what Lockstep did shows up here."
+      "body": "Each time an app closes, what STFD did shows up here."
     },
     "clear": "Clear history",
     "clearConfirm": {
       "title": "Clear the history?",
-      "body": "The list of what Lockstep did is deleted. Apps and their settings stay."
+      "body": "The list of what STFD did is deleted. Apps and their settings stay."
     },
     "outcome": {
       "cleaned": "Cleaned up",
@@ -319,7 +319,7 @@
       "notOpened": "Did not open"
     },
     "trigger": {
-      "shortcut": "Opened with Lockstep",
+      "shortcut": "Opened with STFD",
       "adopted": "Opened another way",
       "manual": "Closed by you"
     },
@@ -378,7 +378,7 @@
       "title": "Watching"
     },
     "watchAlways": "Also watch apps opened another way",
-    "watchHint": "Start menu, a file, the taskbar: Lockstep notices and closes what they leave too. It then starts with Windows and stays in the tray.",
+    "watchHint": "Start menu, a file, the taskbar: STFD notices and closes what they leave too. It then starts with Windows and stays in the tray.",
     "look": {
       "title": "Language and look"
     },
@@ -389,7 +389,7 @@
     "light": "Light",
     "about": {
       "title": "About",
-      "body": "Lockstep grew out of two launcher scripts, for Ansys Electronics Desktop and Multisim, and does the same for any program. MIT license.",
+      "body": "STFD is short for Shut The Fluff Down: the fluff is everything a program leaves running for nothing. It grew out of two launcher scripts, for Ansys Electronics Desktop and Multisim, and does the same for any program. MIT license.",
       "github": "Source on GitHub"
     }
   },
@@ -399,11 +399,11 @@
     "following": "Following {names}",
     "demo": "Simulated Windows",
     "demoHint": "This page runs in a browser with made-up apps; it changes nothing.",
-    "version": "Lockstep {version}",
-    "github": "Lockstep on GitHub"
+    "version": "STFD {version}",
+    "github": "STFD on GitHub"
   },
   "errors": {
-    "unsupported": "Lockstep works on Windows.",
+    "unsupported": "STFD works on Windows.",
     "invalid": "Something is missing or not valid: {detail}",
     "not_found": "That app is not there any more.",
     "folder_problem": "That folder cannot be used: {detail}",

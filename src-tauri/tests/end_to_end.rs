@@ -1,34 +1,34 @@
-//! The built app, started the way its shortcut starts it (`lockstep --run <app>`): it opens the
+//! The built app, started the way its shortcut starts it (`stfd --run <app>`): it opens the
 //! program, follows it, and after the program closes ends the helper left running from its folder,
-//! writes the session to History and exits. Ignored by default: it uses the real Lockstep config
-//! folder of this account (saved and put back around the test) and the copy of `lockstep-fixture`
+//! writes the session to History and exits. Ignored by default: it uses the real STFD config
+//! folder of this account (saved and put back around the test) and the copy of `stfd-fixture`
 //! that `cargo test --workspace` builds next to the app. CI runs it on Windows.
 #![cfg(windows)]
 
-use lockstep_core::paths;
-use lockstep_core::windows::process;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 use std::time::{Duration, Instant};
+use stfd_core::paths;
+use stfd_core::windows::process;
 
-const APP: &str = env!("CARGO_BIN_EXE_lockstep");
+const APP: &str = env!("CARGO_BIN_EXE_stfd");
 
 fn fixture() -> PathBuf {
-    let f = Path::new(APP).with_file_name("lockstep-fixture.exe");
+    let f = Path::new(APP).with_file_name("stfd-fixture.exe");
     assert!(
         f.is_file(),
-        "build lockstep-fixture first (cargo test --workspace builds it)"
+        "build stfd-fixture first (cargo test --workspace builds it)"
     );
     f
 }
 
-/// Lockstep's folders for this account, as Tauri finds them.
+/// STFD's folders for this account, as Tauri finds them.
 fn dirs() -> (PathBuf, PathBuf) {
-    let roaming = lockstep_core::windows::folders::all("").app_data[0].clone();
-    let local = lockstep_core::windows::folders::all("").app_data[1].clone();
+    let roaming = stfd_core::windows::folders::all("").app_data[0].clone();
+    let local = stfd_core::windows::folders::all("").app_data[1].clone();
     (
-        Path::new(&roaming).join("com.bugragungoz.lockstep"),
-        Path::new(&local).join("com.bugragungoz.lockstep"),
+        Path::new(&roaming).join("com.bugragungoz.stfd"),
+        Path::new(&local).join("com.bugragungoz.stfd"),
     )
 }
 
@@ -62,7 +62,7 @@ fn wait_until(what: &str, timeout: Duration, mut done: impl FnMut() -> bool) {
     }
 }
 
-fn running(path: &str) -> Vec<lockstep_core::snapshot::Proc> {
+fn running(path: &str) -> Vec<stfd_core::snapshot::Proc> {
     process::PathCache::default()
         .processes()
         .unwrap()
@@ -72,12 +72,12 @@ fn running(path: &str) -> Vec<lockstep_core::snapshot::Proc> {
 }
 
 #[test]
-#[ignore = "runs the built app against this account's Lockstep folder; run with --include-ignored on Windows"]
-fn the_shortcut_opens_the_program_and_lockstep_closes_what_it_left() {
-    let temp = std::env::temp_dir().join(format!("lockstep-e2e-{}", lockstep_core::new_id()));
+#[ignore = "runs the built app against this account's STFD folder; run with --include-ignored on Windows"]
+fn the_shortcut_opens_the_program_and_stfd_closes_what_it_left() {
+    let temp = std::env::temp_dir().join(format!("stfd-e2e-{}", stfd_core::new_id()));
     let folder = temp.join("App");
     std::fs::create_dir_all(&folder).unwrap();
-    let folder = lockstep_core::windows::long_path(&folder.to_string_lossy());
+    let folder = stfd_core::windows::long_path(&folder.to_string_lossy());
     let program = format!("{folder}\\app.exe");
     let helper = format!("{folder}\\helper.exe");
     std::fs::copy(fixture(), &program).unwrap();
@@ -105,10 +105,10 @@ fn the_shortcut_opens_the_program_and_lockstep_closes_what_it_left() {
     // A helper of the app left running from an earlier time.
     let mut left = Command::new(&helper).arg("background").spawn().unwrap();
 
-    // Lockstep says what it does on stderr, which goes to the test's output.
-    let mut lockstep = Command::new(APP)
+    // STFD says what it does on stderr, which goes to the test's output.
+    let mut stfd = Command::new(APP)
         .args(["--run", "e2e"])
-        .env("LOCKSTEP_LOG", "1")
+        .env("STFD_LOG", "1")
         .spawn()
         .unwrap();
     wait_until("the program's window", Duration::from_secs(60), || {
@@ -121,20 +121,20 @@ fn the_shortcut_opens_the_program_and_lockstep_closes_what_it_left() {
         process::ask_to_close(p.pid);
     }
 
-    // Lockstep ends the helper, writes History and exits on its own.
+    // STFD ends the helper, writes History and exits on its own.
     let start = Instant::now();
     let status = loop {
-        if let Some(s) = lockstep.try_wait().unwrap() {
+        if let Some(s) = stfd.try_wait().unwrap() {
             break s;
         }
         if start.elapsed() > Duration::from_secs(90) {
             let program_left = running(&program).len();
             let helper_left = running(&helper).len();
             let history = std::fs::read_to_string(data.join("history.json")).unwrap_or_else(|e| e.to_string());
-            let _ = lockstep.kill();
+            let _ = stfd.kill();
             let _ = left.kill();
             panic!(
-                "Lockstep did not exit after the program closed: program still running {program_left}, helper {helper_left}, history {history}"
+                "STFD did not exit after the program closed: program still running {program_left}, helper {helper_left}, history {history}"
             );
         }
         std::thread::sleep(Duration::from_millis(250));

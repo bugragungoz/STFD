@@ -1,4 +1,4 @@
-//! Lockstep's core: the apps it opens, the session that follows each one, the plan for what to
+//! STFD's core: the apps it opens, the session that follows each one, the plan for what to
 //! close after it, and the files it keeps. Everything outside `windows` is plain Rust and tested on
 //! any system; `windows` reads and changes the real system.
 

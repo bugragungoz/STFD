@@ -1,7 +1,7 @@
 {
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
-  "description": "What the Lockstep window may use.",
+  "description": "What the STFD window may use.",
   "windows": ["main"],
   "permissions": [
     "core:default",

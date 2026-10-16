@@ -68,7 +68,7 @@ impl Plan {
 
 /// What the plan must know besides the app and the snapshot.
 pub struct Context<'a> {
-    /// Lockstep's own process, never closed.
+    /// STFD's own process, never closed.
     pub own_pid: u32,
     /// The user's Windows session; programs of other sessions are someone else's.
     pub own_session: u32,
@@ -331,7 +331,7 @@ mod tests {
                 proc(10, 1, &format!("{NI}\\Shared\\nisvcloc.exe")),
                 proc(11, 1, &format!("{NI}\\Shared\\NIUpdate.exe")),
                 proc(12, 1, "C:\\Program Files\\Other\\other.exe"),
-                proc(99, 1, &format!("{NI}\\lockstep-here.exe")),
+                proc(99, 1, &format!("{NI}\\stfd-here.exe")),
                 Proc {
                     path: None,
                     ..proc(13, 1, "x")

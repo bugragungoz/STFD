@@ -1,17 +1,17 @@
-//! The Lockstep app: started by a shortcut (`--run <app>`) it opens that app and follows it
+//! The STFD app: started by a shortcut (`--run <app>`) it opens that app and follows it
 //! without a window; started plainly it shows its window; `--background` (at sign-in, when it
 //! watches apps opened another way) starts it in the tray. A second start hands its request to the
-//! first. Everything about apps and Windows lives in `lockstep-core`; this crate wires it to Tauri.
+//! first. Everything about apps and Windows lives in `stfd-core`; this crate wires it to Tauri.
 
 // Most of the shell only does something on Windows.
 #![cfg_attr(not(windows), allow(dead_code))]
 
-/// What Lockstep does, on stderr, when LOCKSTEP_LOG is set (the end-to-end test sets it). Release
+/// What STFD does, on stderr, when STFD_LOG is set (the end-to-end test sets it). Release
 /// builds have no console, so it costs nothing there.
 macro_rules! trace {
     ($($arg:tt)*) => {
-        if std::env::var_os("LOCKSTEP_LOG").is_some() {
-            eprintln!("lockstep: {}", format!($($arg)*));
+        if std::env::var_os("STFD_LOG").is_some() {
+            eprintln!("stfd: {}", format!($($arg)*));
         }
     };
 }
@@ -79,16 +79,12 @@ pub fn run(args: Vec<String>) {
             let data = app.path().app_local_data_dir()?;
             let own_exe = std::env::current_exe()?.to_string_lossy().to_string();
             #[cfg(windows)]
-            let known = lockstep_core::windows::folders::all(lockstep_core::paths::parent(&own_exe).unwrap_or(""));
+            let known = stfd_core::windows::folders::all(stfd_core::paths::parent(&own_exe).unwrap_or(""));
             #[cfg(not(windows))]
-            let known = lockstep_core::paths::KnownFolders::default();
-            let shared = Arc::new(Shared::new(
-                lockstep_core::store::Store::new(config, data),
-                known,
-                own_exe,
-            ));
+            let known = stfd_core::paths::KnownFolders::default();
+            let shared = Arc::new(Shared::new(stfd_core::store::Store::new(config, data), known, own_exe));
             app.manage(shared.clone());
-            // Without a tray (a session with no taskbar) Lockstep still works.
+            // Without a tray (a session with no taskbar) STFD still works.
             let _ = ui::create_tray(app.handle());
             #[cfg(windows)]
             setup::sync_autostart(&shared);
@@ -126,9 +122,9 @@ pub fn run(args: Vec<String>) {
             commands::make_shortcuts,
         ])
         .build(tauri::generate_context!())
-        .expect("Lockstep could not start")
+        .expect("STFD could not start")
         .run(|app, event| {
-            // Closing the window does not end Lockstep while it follows an app.
+            // Closing the window does not end STFD while it follows an app.
             if let RunEvent::ExitRequested { api, code, .. } = event {
                 trace!("exit requested ({code:?})");
                 if code.is_none() && app.state::<Arc<Shared>>().busy() {
@@ -147,7 +143,7 @@ mod tests {
     }
 
     #[test]
-    fn the_command_line_picks_how_lockstep_starts() {
+    fn the_command_line_picks_how_stfd_starts() {
         assert_eq!(parse(&args(&[])), Start::Window);
         assert_eq!(parse(&args(&["--run", "abc123"])), Start::Run("abc123".into()));
         assert_eq!(parse(&args(&["--background"])), Start::Background);

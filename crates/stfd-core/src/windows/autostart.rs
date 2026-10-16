@@ -1,4 +1,4 @@
-//! Starting Lockstep with Windows, for watching apps opened another way: a value under the
+//! Starting STFD with Windows, for watching apps opened another way: a value under the
 //! person's Run key (no administrator rights needed).
 
 use super::{wide, SysResult};
@@ -8,7 +8,7 @@ use windows::Win32::System::Registry::{
 };
 
 const RUN: &str = "Software\\Microsoft\\Windows\\CurrentVersion\\Run";
-const NAME: &str = "Lockstep";
+const NAME: &str = "STFD";
 
 /// The command Windows runs at sign-in, if set.
 pub fn get() -> Option<String> {

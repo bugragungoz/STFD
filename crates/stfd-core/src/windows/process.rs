@@ -166,7 +166,7 @@ pub fn ask_to_close(pid: u32) -> usize {
     asked
 }
 
-/// A process held open while Lockstep closes it, so its number cannot be reused by another
+/// A process held open while STFD closes it, so its number cannot be reused by another
 /// process in the meantime.
 pub struct Held {
     pub pid: u32,

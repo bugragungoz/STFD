@@ -1,21 +1,21 @@
 [package]
-name = "lockstep"
-description = "Opens a program with the services it needs and closes what it leaves behind"
+name = "stfd"
+description = "Shut The Fluff Down: opens a program with the services it needs and closes what it leaves behind"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
 repository.workspace = true
-default-run = "lockstep"
+default-run = "stfd"
 
 [lib]
-name = "lockstep_lib"
+name = "stfd_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [build-dependencies]
 tauri-build = { version = "2.5", features = [] }
 
 [dependencies]
-lockstep-core = { path = "../crates/lockstep-core" }
+stfd-core = { path = "../crates/stfd-core" }
 tauri = { version = "2.12", features = ["tray-icon"] }
 tauri-plugin-dialog = "~2.7.3"
 tauri-plugin-notification = "2"

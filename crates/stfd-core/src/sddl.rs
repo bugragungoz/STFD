@@ -1,16 +1,16 @@
 //! Letting one person start and stop one service without administrator rights.
 //!
 //! A service's permissions are a security descriptor, written as SDDL:
-//! `D:(A;;CCLCSWRPWPDTLOCRRC;;;SY)(A;;...;;;BA)S:(AU;FA;...;;;WD)`. Lockstep adds one entry to the
+//! `D:(A;;CCLCSWRPWPDTLOCRRC;;;SY)(A;;...;;;BA)S:(AU;FA;...;;;WD)`. STFD adds one entry to the
 //! `D:` part (the DACL) that allows the person's account (their SID) to query, start and stop the
-//! service, and nothing else. Setting it needs administrator rights once; afterwards Lockstep starts
+//! service, and nothing else. Setting it needs administrator rights once; afterwards STFD starts
 //! and stops the service as the person. The original text is kept to put back.
 
 /// Query configuration (CC), query status (LC), start (RP), stop (WP), interrogate (LO) and read
 /// the permissions (RC).
 pub const RIGHTS: &str = "CCLCRPWPLORC";
 
-/// The entry Lockstep adds for `sid`.
+/// The entry STFD adds for `sid`.
 pub fn entry(sid: &str) -> String {
     format!("(A;;{RIGHTS};;;{sid})")
 }
@@ -55,7 +55,7 @@ fn parts(sddl: &str) -> Vec<(u8, usize, usize)> {
     out
 }
 
-/// True when the permissions already let `sid` start and stop the service the way Lockstep would.
+/// True when the permissions already let `sid` start and stop the service the way STFD would.
 pub fn has_entry(sddl: &str, sid: &str) -> bool {
     let wanted = entries(sid);
     parts(sddl)
@@ -67,7 +67,7 @@ pub fn has_entry(sddl: &str, sid: &str) -> bool {
         })
 }
 
-/// The permissions with Lockstep's entry for `sid` added at the end of the DACL. None when nothing
+/// The permissions with STFD's entry for `sid` added at the end of the DACL. None when nothing
 /// needs to change: the entry is there already, or there is no DACL to add to (no `D:` part, or
 /// `NO_ACCESS_CONTROL`, which already allows everyone everything).
 pub fn with_entry(sddl: &str, sid: &str) -> Option<String> {
@@ -82,7 +82,7 @@ pub fn with_entry(sddl: &str, sid: &str) -> Option<String> {
     Some(format!("{}{}{}", &sddl[..end], entry(sid), &sddl[end..]))
 }
 
-/// The permissions without Lockstep's entry for `sid`; None when it is not there.
+/// The permissions without STFD's entry for `sid`; None when it is not there.
 pub fn without_entry(sddl: &str, sid: &str) -> Option<String> {
     let (_, start, end) = parts(sddl).into_iter().find(|(tag, ..)| *tag == b'D')?;
     let dacl = sddl[start..end].to_ascii_uppercase();

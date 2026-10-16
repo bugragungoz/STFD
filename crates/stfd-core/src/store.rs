@@ -1,4 +1,4 @@
-//! The files Lockstep keeps: `apps.json` and `settings.json` in the config folder, `history.json`
+//! The files STFD keeps: `apps.json` and `settings.json` in the config folder, `history.json`
 //! in the data folder. Writes go to a temporary file first and replace the old one, so a crash
 //! never leaves half a file; a file that cannot be read is set aside, not lost.
 
@@ -99,7 +99,7 @@ mod tests {
     use crate::model::{Outcome, Trigger};
 
     fn temp() -> PathBuf {
-        let dir = std::env::temp_dir().join(format!("lockstep-store-{}", crate::new_id()));
+        let dir = std::env::temp_dir().join(format!("stfd-store-{}", crate::new_id()));
         fs::create_dir_all(&dir).unwrap();
         dir
     }

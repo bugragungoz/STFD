@@ -1,6 +1,6 @@
-# What Lockstep adds to Bugra
+# What STFD adds to Bugra
 
-Bugra was drawn for a website. Lockstep reuses its tokens, fonts and components (copied from the
+Bugra was drawn for a website. STFD reuses its tokens, fonts and components (copied from the
 owner's component-inventory app through netSwitch and adbDebloat) and adds the pieces a launcher
 needs. Each one is built from Bugra tokens and shapes and is marked "(added)" in the code. No color
 is added: every color comes from `src/styles/tokens.css`, which `npm run check:colors` enforces.
@@ -19,11 +19,11 @@ is added: every color comes from `src/styles/tokens.css`, which `npm run check:c
 | Pick list | `layout.css`, `.pick-list` | Rows in one bordered box; programs are radios (accent dot), services checkboxes. |
 | Segmented control | `components/Misc.tsx`, `.tabs` | A pill group with `role="radiogroup"`; the chosen option wears the accent tint. |
 | Snackbar stack | `components/Snackbars.tsx` | Bugra's snackbar, stacked at the bottom left with a close button. |
-| Status bar | `App.tsx`, `layout.css` | What Lockstep follows, the version and the GitHub link. |
+| Status bar | `App.tsx`, `layout.css` | What STFD follows, the version and the GitHub link. |
 
 ## Icons (`components/icons.ts`)
 
-Bugra-style line icons on a 24 px grid, 1.6 px stroke with round caps. Lockstep adds `plus`,
+Bugra-style line icons on a 24 px grid, 1.6 px stroke with round caps. STFD adds `plus`,
 `play`, `folder`, `link`, `window`, `timer`, `shield`, `stop`, `back` and `services`, the mark
 beside the name in the sidebar (`App.tsx`: a program with the two things that come and go with it),
 and the GitHub mark from Primer Octicons (MIT) for the link in the status bar.

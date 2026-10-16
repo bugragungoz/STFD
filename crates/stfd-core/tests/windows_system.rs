@@ -1,30 +1,28 @@
-//! Lockstep against a real Windows: processes and windows, closing leftovers politely and by force,
+//! STFD against a real Windows: processes and windows, closing leftovers politely and by force,
 //! a real service started, stopped and given permissions, shortcuts, program details and the
 //! elevated step. They change the system (a test service, the Run key) and need administrator
 //! rights, so they are ignored by default; CI runs them on a Windows runner (which is elevated)
-//! with `--include-ignored`. The programs they run are copies of `lockstep-fixture`.
+//! with `--include-ignored`. The programs they run are copies of `stfd-fixture`.
 #![cfg(windows)]
 
-use lockstep_core::elevated::{Change, Outcome, Request};
-use lockstep_core::model::{App, ServiceRule, StartType};
-use lockstep_core::paths::{self, KnownFolders};
-use lockstep_core::plan::{self, Context};
-use lockstep_core::snapshot::{Snapshot, SvcState};
-use lockstep_core::windows::{
-    autostart, elevated, execute, folders, icon, launch, process, services, shortcut, version,
-};
 use std::path::{Path, PathBuf};
 use std::process::{Child, Command};
 use std::time::{Duration, Instant};
+use stfd_core::elevated::{Change, Outcome, Request};
+use stfd_core::model::{App, ServiceRule, StartType};
+use stfd_core::paths::{self, KnownFolders};
+use stfd_core::plan::{self, Context};
+use stfd_core::snapshot::{Snapshot, SvcState};
+use stfd_core::windows::{autostart, elevated, execute, folders, icon, launch, process, services, shortcut, version};
 
-const FIXTURE: &str = env!("CARGO_BIN_EXE_lockstep-fixture");
+const FIXTURE: &str = env!("CARGO_BIN_EXE_stfd-fixture");
 
 /// A fresh folder under the temp folder, removed at the end.
 struct Temp(PathBuf);
 
 impl Temp {
     fn new(name: &str) -> Self {
-        let dir = std::env::temp_dir().join(format!("lockstep-{name}-{}", lockstep_core::new_id()));
+        let dir = std::env::temp_dir().join(format!("stfd-{name}-{}", stfd_core::new_id()));
         std::fs::create_dir_all(&dir).unwrap();
         Temp(dir)
     }
@@ -230,7 +228,7 @@ struct TestService {
 
 impl TestService {
     fn create(program: &str) -> Self {
-        let name = format!("LockstepTest{}", lockstep_core::new_id());
+        let name = format!("StfdTest{}", stfd_core::new_id());
         let ok = Command::new("sc.exe")
             .args([
                 "create",
@@ -273,7 +271,7 @@ fn a_service_of_the_app_starts_before_it_and_stops_after_it() {
     assert_eq!(info.start_type, StartType::Manual);
     assert_eq!(info.state, SvcState::Stopped);
     assert!(info.controllable, "an administrator may start and stop it");
-    let related = lockstep_core::services::related(&all, &[temp.path("Vendor")], None, &k);
+    let related = stfd_core::services::related(&all, &[temp.path("Vendor")], None, &k);
     assert!(related.iter().any(|r| r.service.name == svc.name));
 
     let mut a = app(&temp.path("Vendor"), &main);
@@ -338,9 +336,9 @@ fn the_elevated_step_gives_and_takes_back_permission_and_the_start_type() {
     let temp = Temp::new("rights");
     let svc = TestService::create(&temp.program("Svc\\svc.exe"));
     let sid = services::own_sid().unwrap();
-    assert!(lockstep_core::sddl::is_account_sid(&sid), "{sid}");
+    assert!(stfd_core::sddl::is_account_sid(&sid), "{sid}");
     let before = services::sddl(&svc.name).unwrap();
-    assert!(!lockstep_core::sddl::has_entry(&before, &sid));
+    assert!(!stfd_core::sddl::has_entry(&before, &sid));
     services::set_start_type(&svc.name, StartType::Automatic).unwrap();
 
     // Through the command line, as the app runs it.
@@ -354,17 +352,14 @@ fn the_elevated_step_gives_and_takes_back_permission_and_the_start_type() {
         }],
     };
     let result = temp.path("result.json");
-    let code = elevated::main(&[lockstep_core::elevated::encode(&request), result.clone()]);
+    let code = elevated::main(&[stfd_core::elevated::encode(&request), result.clone()]);
     assert_eq!(code, 0);
-    let outcomes: Vec<Outcome> = lockstep_core::store::read(Path::new(&result));
+    let outcomes: Vec<Outcome> = stfd_core::store::read(Path::new(&result));
     assert_eq!(outcomes.len(), 1);
     assert_eq!(outcomes[0].error, None);
     assert!(outcomes[0].original.granted);
     assert_eq!(outcomes[0].original.start_type, Some(StartType::Automatic));
-    assert!(lockstep_core::sddl::has_entry(
-        &services::sddl(&svc.name).unwrap(),
-        &sid
-    ));
+    assert!(stfd_core::sddl::has_entry(&services::sddl(&svc.name).unwrap(), &sid));
     assert_eq!(services::get_start_type(&svc.name).unwrap(), StartType::Manual);
 
     // Granting again changes nothing; taking it back leaves the rest as it was.
@@ -382,7 +377,7 @@ fn the_elevated_step_gives_and_takes_back_permission_and_the_start_type() {
     };
     assert_eq!(elevated::run(&undo)[0].error, None);
     let after = services::sddl(&svc.name).unwrap();
-    assert!(!lockstep_core::sddl::has_entry(&after, &sid));
+    assert!(!stfd_core::sddl::has_entry(&after, &sid));
     assert_eq!(after, before);
     assert_eq!(services::get_start_type(&svc.name).unwrap(), StartType::Automatic);
 
@@ -391,7 +386,7 @@ fn the_elevated_step_gives_and_takes_back_permission_and_the_start_type() {
         sid: "S-1-1-0".into(),
         ..request
     };
-    assert_eq!(elevated::main(&[lockstep_core::elevated::encode(&bad), result]), 2);
+    assert_eq!(elevated::main(&[stfd_core::elevated::encode(&bad), result]), 2);
 }
 
 #[test]
@@ -421,7 +416,7 @@ fn a_shortcut_is_written_read_back_and_found() {
             arguments: "--run abc123",
             working_dir: &temp.path("App"),
             icon: &target,
-            description: "Opens the test app with Lockstep",
+            description: "Opens the test app with STFD",
         },
     )
     .unwrap();
@@ -430,7 +425,7 @@ fn a_shortcut_is_written_read_back_and_found() {
     assert!(paths::same(&opens, FIXTURE));
     assert_eq!(args, "--run abc123");
 
-    // The program's own shortcut is found; Lockstep's (which opens Lockstep) is not.
+    // The program's own shortcut is found; STFD's (which opens STFD) is not.
     let direct = temp.path("Direct.lnk");
     shortcut::create(
         &direct,
@@ -453,11 +448,8 @@ fn a_shortcut_is_written_read_back_and_found() {
 #[ignore = "changes the Run key; run with --include-ignored on Windows"]
 fn starting_with_windows_can_be_set_and_removed() {
     let before = autostart::get();
-    autostart::set("\"C:\\Lockstep\\lockstep.exe\" --background").unwrap();
-    assert_eq!(
-        autostart::get().as_deref(),
-        Some("\"C:\\Lockstep\\lockstep.exe\" --background")
-    );
+    autostart::set("\"C:\\STFD\\stfd.exe\" --background").unwrap();
+    assert_eq!(autostart::get().as_deref(), Some("\"C:\\STFD\\stfd.exe\" --background"));
     autostart::remove();
     assert_eq!(autostart::get(), None);
     if let Some(b) = before {
