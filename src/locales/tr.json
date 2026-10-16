@@ -1,0 +1,452 @@
+{
+  "nav": {
+    "label": "Ana menü",
+    "skip": "İçeriğe geç",
+    "apps": "Uygulamalar",
+    "history": "Geçmiş",
+    "settings": "Ayarlar",
+    "note": "Shut The Fluff Down: STFD programlarınızı ihtiyaç duydukları hizmetlerle açar, geride bıraktıklarını kapatır."
+  },
+  "apps": {
+    "title": "Uygulamalar",
+    "subtitle": "Bunları STFD'nin kısayoluyla açın: önce hizmetleri başlar, kapandıklarında arkada bıraktıkları da kapanır.",
+    "add": "Uygulama ekle",
+    "addFirst": "İlk uygulamanızı ekleyin",
+    "open": "Aç",
+    "openNamed": "{name} uygulamasını aç",
+    "opening": "{name} açılıyor",
+    "services": {
+      "one": "{count} hizmet",
+      "other": "{count} hizmet"
+    },
+    "wait": "{time} bekler",
+    "leftovers": {
+      "one": "{count} programı hâlâ çalışıyor",
+      "other": "{count} programı hâlâ çalışıyor"
+    },
+    "unsupported": {
+      "title": "STFD Windows'ta çalışır",
+      "body": "Bu pencere bir önizleme; burada hiçbir şeyi başlatamaz, durduramaz ya da kapatamaz."
+    },
+    "empty": {
+      "title": "STFD nasıl çalışır",
+      "folder": {
+        "title": "Programın kurulu olduğu klasörü seçin",
+        "body": "Oradan çalışan her şey ve programı orada duran hizmetler ona aittir."
+      },
+      "program": {
+        "title": "Açılacak programı seçin",
+        "body": "STFD klasördeki programları listeler; en olası olan en üsttedir."
+      },
+      "shortcut": {
+        "title": "STFD'nin kısayoluyla açın",
+        "body": "Önce hizmetleri başlar, sonra program açılır. Windows hizmetleri başlatıp durdurmak için bir kez izin ister."
+      },
+      "close": {
+        "title": "Her zamanki gibi kapatın",
+        "body": "Kısa bir beklemeden sonra STFD arkada kalan yardımcıları kapatır ve hizmetleri durdurur."
+      }
+    }
+  },
+  "phase": {
+    "idle": "Açık değil",
+    "starting": "Başlıyor",
+    "open": "Açık",
+    "closing": "Kalanlar {time} sonra kapanacak",
+    "cleaning": "Kalanlar kapatılıyor"
+  },
+  "app": {
+    "back": "Uygulamalar",
+    "open": "Aç",
+    "closeLeftovers": "Kalanları şimdi kapat",
+    "closeNow": "Şimdi kapat",
+    "keepRunning": "Açık bırak",
+    "kept": "{name}: bu sefer her şey açık kalıyor.",
+    "remove": "Kaldır",
+    "removed": "{name} kısayollarıyla birlikte kaldırıldı.",
+    "removedServicesLeft": "{name} kaldırıldı. Windows izin vermediği için hizmetleri STFD'nin verdiği ayarlarda kaldı.",
+    "removeConfirm": {
+      "title": "{name} kaldırılsın mı?",
+      "body": "STFD'nin {name} kısayolları silinir, programın kendi kısayolları geri gelir. Programın kendisi kurulu kalır.",
+      "services": "Windows, hizmetleri eski hâline döndürmek için bir kez izin ister."
+    },
+    "status": {
+      "title": "Şu an",
+      "idle": "Açık değil. Kısayolu onu STFD ile açar.",
+      "idleLeftovers": "Açık değil, ama {programs} programı ve {services} hizmeti hâlâ çalışıyor.",
+      "starting": "Hizmetler başlatılıyor, ardından {name} açılacak.",
+      "open": "{time} açıldı.",
+      "closing": "{name} kapandı. Yeniden açmazsanız STFD kalanları {time} sonra kapatacak.",
+      "cleaning": "Arkada bıraktıkları kapatılıyor."
+    },
+    "running": {
+      "title": "Şu an çalışanlar",
+      "window": "Pencere"
+    },
+    "services": {
+      "title": "Hizmetler",
+      "subtitle": "{name} açılmadan önce başlar, kapandıktan sonra durur.",
+      "none": "Hizmet yok. Program ihtiyaç duyuyorsa ekleyin.",
+      "add": "Hizmet ekle",
+      "start": "Önce başlat",
+      "stop": "Sonra durdur",
+      "remove": "{name} hizmetini çıkar",
+      "missing": "Bu bilgisayarda yok"
+    },
+    "programs": {
+      "title": "Programlar",
+      "closeAll": "Klasörlerinden arkada kalan programları kapat",
+      "closeAllHint": "Her birinden önce kendisi kapanması istenir; kapanmazsa sonlandırılır.",
+      "seen": "{name} ile görülenler",
+      "seenEmpty": "{name} bir kez açıldıktan sonra programlar burada görünür.",
+      "closeNamed": "{name} uygulamadan sonra kapansın"
+    },
+    "folders": {
+      "title": "Klasörler",
+      "subtitle": "Bu klasörlerdeki programlar ve hizmetler {name} uygulamasına aittir.",
+      "add": "Klasör ekle",
+      "remove": "{folder} klasörünü çıkar"
+    },
+    "timing": {
+      "title": "Zamanlama",
+      "wait": "{name} kapandıktan sonra bekleme",
+      "default": "Varsayılan ({time})",
+      "waitHint": "Bekleme sırasında yeniden açarsanız her şey açık kalır.",
+      "delay": "Hizmetler başladıktan sonra bekleme",
+      "delayHint": "Bazı hizmetler cevap vermeden önce çalışıyor görünür; birkaç saniye onlara zaman tanır."
+    },
+    "shortcuts": {
+      "title": "Kısayollar",
+      "subtitle": "Bunlar {name} uygulamasını STFD ile açar.",
+      "none": "Henüz kısayol yok.",
+      "make": "Kısayol oluştur",
+      "remake": "Yeniden oluştur",
+      "made": "Kısayollar hazır."
+    },
+    "history": {
+      "title": "Son kullanımlar",
+      "all": "Tüm geçmiş",
+      "since": "Eklenme: {date}."
+    }
+  },
+  "permission": {
+    "needed": {
+      "one": "{count} hizmet bir kez izninizi istiyor",
+      "other": "{count} hizmet bir kez izninizi istiyor"
+    },
+    "why": "Windows hizmetleri yalnızca yöneticilerin başlatıp durdurmasına izin verir. STFD bir kez sorar, sonra bunları size sormadan başlatıp durdurur.",
+    "give": "İzin ver",
+    "asking": "Windows bekleniyor...",
+    "granted": "STFD artık hizmetlerini başlatıp durdurabilir.",
+    "declined": "Windows izin vermedi. STFD bu hizmetleri henüz başlatıp durduramaz.",
+    "failed": {
+      "one": "{count} hizmet değiştirilemedi; Geçmiş'e bakın.",
+      "other": "{count} hizmet değiştirilemedi; Geçmiş'e bakın."
+    }
+  },
+  "services": {
+    "addTitle": "Hizmet ekle",
+    "search": "Hizmet ara",
+    "loading": "Hizmetler okunuyor..."
+  },
+  "svc": {
+    "stopped": "Durdu",
+    "starting": "Başlıyor",
+    "stopping": "Duruyor",
+    "running": "Çalışıyor",
+    "paused": "Duraklatıldı"
+  },
+  "cleanup": {
+    "title": "{name} uygulamasının bıraktıkları kapatılsın mı?",
+    "reading": "Çalışanlara bakılıyor...",
+    "nothing": "{name} uygulamasına ait çalışan bir şey yok.",
+    "intro": "Programlara sonlandırılmadan önce kendiliğinden kapanmaları için {seconds} saniye verilir.",
+    "programs": {
+      "one": "{count} program",
+      "other": "{count} program"
+    },
+    "services": {
+      "one": "Durdurulacak {count} hizmet",
+      "other": "Durdurulacak {count} hizmet"
+    },
+    "skipped": {
+      "one": "{count} tanesi açık kalacak",
+      "other": "{count} tanesi açık kalacak"
+    },
+    "confirm": "Kapat",
+    "closing": "Kapatılıyor...",
+    "done": "{services} durduruldu, {programs} kapatıldı.",
+    "whileOpen": "Uygulama açık; programlarını kapatmak onu da kapatır.",
+    "programCount": {
+      "one": "{count} program",
+      "other": "{count} program"
+    }
+  },
+  "skip": {
+    "system": "Windows'un parçası",
+    "otherUser": "Bu bilgisayardaki başka bir kişi için çalışıyor",
+    "serviceProcess": "Uygulamanın durdurmadığı {name} hizmetini çalıştırıyor",
+    "inUse": "{name} açık ve onu kullanıyor",
+    "dependentRunning": "{name} çalışıyor ve ona ihtiyaç duyuyor"
+  },
+  "add": {
+    "title": "Uygulama ekle",
+    "subtitle": "Dört adım; kaydedene kadar bilgisayarınızda hiçbir şey değişmez.",
+    "steps": "Adımlar",
+    "step": {
+      "folder": "Klasör",
+      "program": "Program",
+      "services": "Hizmetler",
+      "finish": "Kısayol"
+    },
+    "back": "Geri",
+    "next": "İleri",
+    "save": "Uygulamayı ekle",
+    "saving": "Kaydediliyor...",
+    "folder": {
+      "title": "Program nereye kurulu?",
+      "body": "Kendi klasörünü seçin, örneğin C:\\Program Files (x86)\\National Instruments. Oradan çalışan her şey uygulamaya aittir.",
+      "choose": "Klasör seç",
+      "change": "Başka klasör seç",
+      "pick": "Programın kurulu olduğu klasör",
+      "scanning": "Programlar aranıyor...",
+      "found": {
+        "one": "{count} program bulundu.",
+        "other": "{count} program bulundu."
+      },
+      "cannot": "Bu klasör bir uygulamanın klasörü olamaz",
+      "noPrograms": "Bu klasörde program yok",
+      "noProgramsBody": "Programın .exe dosyasının bulunduğu klasörü ya da onun bir üstünü seçin."
+    },
+    "program": {
+      "title": "Kısayol hangi programı açsın?",
+      "body": "En olası olan en üstte. Güncelleyiciler ve kaldırıcılar gizli.",
+      "search": "Program ara",
+      "browse": "Başka program seç",
+      "pick": "Açılacak program",
+      "console": "Konsol",
+      "showNoise": {
+        "one": "{count} tane daha göster (güncelleyiciler, kaldırıcılar)",
+        "other": "{count} tane daha göster (güncelleyiciler, kaldırıcılar)"
+      },
+      "hideNoise": "Güncelleyicileri ve kaldırıcıları gizle",
+      "name": "Ad",
+      "nameHint": "Kısayol ve STFD bu adı kullanır.",
+      "args": "Parametreler (isteğe bağlı)",
+      "argsHint": "Program açılırken ona verilir."
+    },
+    "services": {
+      "title": "Hangi hizmetler onunla birlikte açılıp kapansın?",
+      "body": "Bunlar {name} uygulamasına ait görünüyor: programları onun klasörlerinde ya da aynı yayıncıdan.",
+      "loading": "Hizmetler okunuyor...",
+      "failed": "Hizmetler okunamadı",
+      "none": "Uygulamaya ait görünen hizmet yok. Kendiniz ekleyebilirsiniz.",
+      "found": {
+        "one": "{count} hizmet, yayıncı {company}",
+        "other": "{count} hizmet, yayıncı {company}"
+      },
+      "pickNamed": "{name} kullanılsın",
+      "startsWithWindows": "Windows ile başlıyor",
+      "why": {
+        "inFolder": "Klasöründe",
+        "samePublisher": "Aynı yayıncı",
+        "added": "Sizin eklediğiniz"
+      },
+      "start": "{name} açılmadan önce başlat",
+      "stop": "{name} kapandıktan sonra durdur",
+      "manual": {
+        "one": "{count} tanesini yalnızca gerektiğinde başlat",
+        "other": "{count} tanesini yalnızca gerektiğinde başlat"
+      },
+      "manualHint": "Şu an Windows ile başlıyorlar. El ile başlayacak şekilde ayarlanırsa yalnızca uygulama açıkken çalışırlar.",
+      "vendor": "Aynı üreticinin klasörleri",
+      "vendorHint": "Bunları da uygulamanın parçası say. Tek başına kullandığınız başka programlar varsa işaretlemeyin."
+    },
+    "finish": {
+      "title": "Kısayol ve zamanlama",
+      "shortcuts": "Kısayollar",
+      "replace": "Masaüstündeki \"{file}\" yerine STFD'nin kısayolunu koy",
+      "public": "\"{file}\" ortak masaüstünde",
+      "publicBody": "Programı STFD olmadan açar. Tek kısayol istiyorsanız silin.",
+      "permission": "Windows bir kez soracak",
+      "permissionBody": "STFD'nin bu hizmetleri başlatıp durdurması için bir yönetici izni gerekiyor. Sonrasında bir daha sormaz.",
+      "services": {
+        "one": "{count} hizmet",
+        "other": "{count} hizmet"
+      },
+      "folders": {
+        "one": "{count} klasör",
+        "other": "{count} klasör"
+      }
+    },
+    "saved": "{name} hazır.",
+    "savedDesktop": "{name} hazır. Masaüstündeki yeni kısayolla açın.",
+    "savedNoPermission": "{name} kaydedildi, ama Windows hizmetleri için izin vermedi. İzni uygulamanın sayfasından verebilirsiniz.",
+    "savedProblems": {
+      "one": "{name} kaydedildi; {count} şey çalışmadı, uygulamanın sayfasına bakın.",
+      "other": "{name} kaydedildi; {count} şey çalışmadı, uygulamanın sayfasına bakın."
+    }
+  },
+  "folder": {
+    "problem": {
+      "notAbsolute": "Bir sürücüdeki klasörü seçin, örneğin C:\\Program Files\\Üretici.",
+      "driveRoot": "Bütün bir sürücü fazla şey içerir: programın kendi klasörünü seçin.",
+      "system": "Windows'un kendi klasörleri kullanılamaz.",
+      "tooBroad": "Bu klasörde birbiriyle ilgisiz pek çok program var: içindeki programın kendi klasörünü seçin.",
+      "own": "Bu, STFD'nin kendi klasörü."
+    }
+  },
+  "shortcut": {
+    "desktop": "Masaüstünde",
+    "startMenu": "Başlat menüsünde"
+  },
+  "history": {
+    "title": "Geçmiş",
+    "subtitle": "Bir uygulama her kapandığında: neyin başladığı, neyin durduğu ve neyin çalışmadığı.",
+    "empty": {
+      "title": "Henüz bir şey yok",
+      "body": "Bir uygulama her kapandığında STFD'nin yaptıkları burada görünür."
+    },
+    "clear": "Geçmişi temizle",
+    "clearConfirm": {
+      "title": "Geçmiş temizlensin mi?",
+      "body": "STFD'nin yaptıklarının listesi silinir. Uygulamalar ve ayarları kalır."
+    },
+    "outcome": {
+      "cleaned": "Temizlendi",
+      "nothing": "Kalan yoktu",
+      "kept": "Açık bırakıldı",
+      "notOpened": "Açılmadı"
+    },
+    "trigger": {
+      "shortcut": "STFD ile açıldı",
+      "adopted": "Başka yoldan açıldı",
+      "manual": "Sizin kapattığınız"
+    },
+    "openFor": "{time} açık kaldı",
+    "started": {
+      "one": "{count} hizmet başlatıldı",
+      "other": "{count} hizmet başlatıldı"
+    },
+    "stopped": {
+      "one": "{count} hizmet durduruldu",
+      "other": "{count} hizmet durduruldu"
+    },
+    "closed": {
+      "one": "{count} program kapatıldı",
+      "other": "{count} program kapatıldı"
+    },
+    "problems": {
+      "one": "{count} sorun",
+      "other": "{count} sorun"
+    },
+    "show": "Ayrıntılar",
+    "hide": "Ayrıntıları gizle",
+    "startedList": "Başlatılanlar",
+    "stoppedList": "Durdurulanlar",
+    "closedList": "İstenince kapananlar",
+    "endedList": "Sonlandırılanlar",
+    "problemList": "Çalışmayanlar"
+  },
+  "problem": {
+    "start_failed": "başlamadı: {detail}",
+    "stop_failed": "durmadı: {detail}",
+    "close_failed": "kapatılamadı: {detail}",
+    "access_denied": "Windows izin vermedi (yönetici olarak ya da başka bir hesapla çalışıyor)",
+    "launch_failed": "program açılmadı: {detail}",
+    "dependent_running": "{detail} ona ihtiyaç duyduğu için açık bırakıldı",
+    "in_use": "{detail} açık ve onu kullandığı için açık bırakıldı",
+    "service_process": "{detail} hizmetini çalıştırdığı için açık bırakıldı",
+    "other_user": "bu bilgisayardaki başka bir kişi için çalışıyor",
+    "missing": "bu hizmet artık bu bilgisayarda yok",
+    "permission_failed": "izin değiştirilemedi: {detail}",
+    "shortcut_failed": "kısayol oluşturulamadı: {detail}",
+    "shortcut_not_restored": "asıl kısayol geri konamadı; şurada duruyor: {detail}"
+  },
+  "settings": {
+    "title": "Ayarlar",
+    "closing": {
+      "title": "Bir uygulama kapandıktan sonra"
+    },
+    "wait": "Kalanları kapatmadan önce bekleme",
+    "waitHint": "Her uygulamanın kendi beklemesi olabilir. Bekleme sırasında yeniden açarsanız her şey açık kalır.",
+    "polite": "Bir programa kendiliğinden kapanması için verilen süre",
+    "politeHint": "Süre dolunca sonlandırılır.",
+    "notify": "Kapattıktan sonra bildirim göster",
+    "notifyHint": "Bir Windows bildirimi neyin durdurulup kapatıldığını söyler.",
+    "watch": {
+      "title": "İzleme"
+    },
+    "watchAlways": "Başka yoldan açılan uygulamaları da izle",
+    "watchHint": "Başlat menüsü, bir dosya, görev çubuğu: STFD bunları da fark eder ve bıraktıklarını kapatır. Bu durumda Windows ile başlar ve sistem tepsisinde kalır.",
+    "look": {
+      "title": "Dil ve görünüm"
+    },
+    "language": "Dil",
+    "theme": "Tema",
+    "system": "Windows gibi",
+    "dark": "Koyu",
+    "light": "Açık",
+    "about": {
+      "title": "Hakkında",
+      "body": "STFD, Shut The Fluff Down'ın kısaltması: fluff, bir programın arkada boşuna çalışır bıraktığı her şey. Ansys Electronics Desktop ve Multisim için yazılmış iki başlatıcı betikten doğdu ve aynısını her program için yapar. MIT lisansı.",
+      "github": "GitHub'daki kaynak kodu"
+    }
+  },
+  "status": {
+    "starting": "Başlıyor...",
+    "idle": "Açık uygulama yok",
+    "following": "İzleniyor: {names}",
+    "demo": "Benzetilmiş Windows",
+    "demoHint": "Bu sayfa tarayıcıda uydurma uygulamalarla çalışıyor; hiçbir şeyi değiştirmez.",
+    "version": "STFD {version}",
+    "github": "GitHub'da STFD"
+  },
+  "errors": {
+    "unsupported": "STFD Windows'ta çalışır.",
+    "invalid": "Eksik ya da geçersiz bir şey var: {detail}",
+    "not_found": "O uygulama artık yok.",
+    "folder_problem": "O klasör kullanılamaz: {detail}",
+    "save_failed": "Kaydedilemedi: {detail}",
+    "services_failed": "Hizmetler okunamadı: {detail}",
+    "settings_not_saved": "Ayarlar kaydedilmedi: {detail}",
+    "history_failed": "Geçmiş değiştirilemedi: {detail}",
+    "shortcut_failed": "Kısayol oluşturulamadı: {detail}",
+    "internal": "Bir şeyler ters gitti: {detail}"
+  },
+  "common": {
+    "cancel": "Vazgeç",
+    "close": "Kapat",
+    "show": "Klasörde göster",
+    "clearSearch": "Aramayı temizle"
+  },
+  "time": {
+    "never": "hiç",
+    "now": "az önce",
+    "minutesAgo": {
+      "one": "{count} dk önce",
+      "other": "{count} dk önce"
+    },
+    "hoursAgo": {
+      "one": "{count} sa önce",
+      "other": "{count} sa önce"
+    },
+    "daysAgo": {
+      "one": "{count} gün önce",
+      "other": "{count} gün önce"
+    },
+    "noWait": "Beklemeden",
+    "seconds": {
+      "one": "{count} sn",
+      "other": "{count} sn"
+    },
+    "minutes": {
+      "one": "{count} dk",
+      "other": "{count} dk"
+    },
+    "hours": {
+      "one": "{count} sa",
+      "other": "{count} sa"
+    }
+  }
+}

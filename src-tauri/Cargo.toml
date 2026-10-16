@@ -1,0 +1,28 @@
+[package]
+name = "stfd"
+description = "Shut The Fluff Down: opens a program with the services it needs and closes what it leaves behind"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+default-run = "stfd"
+
+[lib]
+name = "stfd_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2.5", features = [] }
+
+[dependencies]
+stfd-core = { path = "../crates/stfd-core" }
+tauri = { version = "2.12", features = ["tray-icon"] }
+tauri-plugin-dialog = "~2.7.3"
+tauri-plugin-notification = "2"
+tauri-plugin-opener = "2"
+tauri-plugin-single-instance = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+[target.'cfg(windows)'.dependencies]
+windows = { version = "0.62", features = ["Win32_Globalization"] }

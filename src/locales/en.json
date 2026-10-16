@@ -1,0 +1,452 @@
+{
+  "nav": {
+    "label": "Main",
+    "skip": "Skip to content",
+    "apps": "Apps",
+    "history": "History",
+    "settings": "Settings",
+    "note": "Shut The Fluff Down: STFD opens your programs with the services they need, and closes what they leave behind."
+  },
+  "apps": {
+    "title": "Apps",
+    "subtitle": "Open these through STFD's shortcut: their services start first, and what they leave running closes after them.",
+    "add": "Add app",
+    "addFirst": "Add your first app",
+    "open": "Open",
+    "openNamed": "Open {name}",
+    "opening": "Opening {name}",
+    "services": {
+      "one": "{count} service",
+      "other": "{count} services"
+    },
+    "wait": "waits {time}",
+    "leftovers": {
+      "one": "{count} program still running",
+      "other": "{count} programs still running"
+    },
+    "unsupported": {
+      "title": "STFD works on Windows",
+      "body": "This window is a preview; it cannot start, stop or close anything here."
+    },
+    "empty": {
+      "title": "How STFD works",
+      "folder": {
+        "title": "Choose the folder a program is installed in",
+        "body": "Everything that runs from there, and the services whose programs live there, belong to it."
+      },
+      "program": {
+        "title": "Choose the program to open",
+        "body": "STFD lists the programs in the folder, the likely one first."
+      },
+      "shortcut": {
+        "title": "Open it from STFD's shortcut",
+        "body": "Its services start first, then the program. Windows asks once for permission to start and stop them."
+      },
+      "close": {
+        "title": "Close it as usual",
+        "body": "After a short wait, STFD closes the helpers it left running and stops its services."
+      }
+    }
+  },
+  "phase": {
+    "idle": "Not open",
+    "starting": "Starting",
+    "open": "Open",
+    "closing": "Closing the rest in {time}",
+    "cleaning": "Closing the rest"
+  },
+  "app": {
+    "back": "Apps",
+    "open": "Open",
+    "closeLeftovers": "Close leftovers now",
+    "closeNow": "Close now",
+    "keepRunning": "Leave running",
+    "kept": "{name}: everything stays running this time.",
+    "remove": "Remove",
+    "removed": "{name} was removed, with its shortcuts.",
+    "removedServicesLeft": "{name} was removed. Its services keep the settings STFD gave them, because Windows did not get permission to put them back.",
+    "removeConfirm": {
+      "title": "Remove {name}?",
+      "body": "STFD's shortcuts for {name} are deleted and the program's own shortcuts come back. The program itself stays installed.",
+      "services": "Windows asks once for permission to put its services back the way they were."
+    },
+    "status": {
+      "title": "Now",
+      "idle": "Not open. Its shortcut opens it with STFD.",
+      "idleLeftovers": "Not open, but {programs} of its programs and {services} of its services are still running.",
+      "starting": "Starting the services, then {name}.",
+      "open": "Opened {time}.",
+      "closing": "{name} closed. STFD closes the rest in {time}, unless you open it again.",
+      "cleaning": "Closing what it left running."
+    },
+    "running": {
+      "title": "Running now",
+      "window": "Window"
+    },
+    "services": {
+      "title": "Services",
+      "subtitle": "Started before {name} opens and stopped after it closes.",
+      "none": "No services. Add one if the program needs it.",
+      "add": "Add a service",
+      "start": "Start before",
+      "stop": "Stop after",
+      "remove": "Remove {name}",
+      "missing": "Not on this computer"
+    },
+    "programs": {
+      "title": "Programs",
+      "closeAll": "Close programs left running from its folders",
+      "closeAllHint": "Each one is asked to close first and ended only if it does not.",
+      "seen": "Seen with {name}",
+      "seenEmpty": "Programs show up here after {name} has been open once.",
+      "closeNamed": "Close {name} after the app"
+    },
+    "folders": {
+      "title": "Folders",
+      "subtitle": "Programs and services in these folders belong to {name}.",
+      "add": "Add folder",
+      "remove": "Remove {folder}"
+    },
+    "timing": {
+      "title": "Timing",
+      "wait": "Wait after {name} closes",
+      "default": "Default ({time})",
+      "waitHint": "Opening it again during the wait keeps everything running.",
+      "delay": "Wait after starting services",
+      "delayHint": "Some services say they are running before they answer; a few seconds give them time."
+    },
+    "shortcuts": {
+      "title": "Shortcuts",
+      "subtitle": "These open {name} through STFD.",
+      "none": "No shortcuts yet.",
+      "make": "Make shortcuts",
+      "remake": "Make them again",
+      "made": "Shortcuts are ready."
+    },
+    "history": {
+      "title": "Recent",
+      "all": "All history",
+      "since": "Added {date}."
+    }
+  },
+  "permission": {
+    "needed": {
+      "one": "{count} service needs your permission once",
+      "other": "{count} services need your permission once"
+    },
+    "why": "Windows lets only administrators start and stop services. STFD asks once, then starts and stops these for you without asking again.",
+    "give": "Give permission",
+    "asking": "Waiting for Windows...",
+    "granted": "STFD may now start and stop its services.",
+    "declined": "Windows did not get permission. STFD cannot start or stop these services yet.",
+    "failed": {
+      "one": "{count} service could not be changed; see History.",
+      "other": "{count} services could not be changed; see History."
+    }
+  },
+  "services": {
+    "addTitle": "Add a service",
+    "search": "Search services",
+    "loading": "Reading the services..."
+  },
+  "svc": {
+    "stopped": "Stopped",
+    "starting": "Starting",
+    "stopping": "Stopping",
+    "running": "Running",
+    "paused": "Paused"
+  },
+  "cleanup": {
+    "title": "Close what {name} left?",
+    "reading": "Looking at what runs...",
+    "nothing": "Nothing of {name} is running.",
+    "intro": "Programs get {seconds} seconds to close on their own before they are ended.",
+    "programs": {
+      "one": "{count} program",
+      "other": "{count} programs"
+    },
+    "services": {
+      "one": "{count} service to stop",
+      "other": "{count} services to stop"
+    },
+    "skipped": {
+      "one": "{count} stays running",
+      "other": "{count} stay running"
+    },
+    "confirm": "Close them",
+    "closing": "Closing...",
+    "done": "Stopped {services} and closed {programs}.",
+    "whileOpen": "The app is open; closing its programs closes it too.",
+    "programCount": {
+      "one": "{count} program",
+      "other": "{count} programs"
+    }
+  },
+  "skip": {
+    "system": "Part of Windows",
+    "otherUser": "Runs for another person on this computer",
+    "serviceProcess": "Runs the {name} service, which the app does not stop",
+    "inUse": "{name} is open and uses it",
+    "dependentRunning": "{name} is running and needs it"
+  },
+  "add": {
+    "title": "Add an app",
+    "subtitle": "Four steps; nothing changes on your computer until you save.",
+    "steps": "Steps",
+    "step": {
+      "folder": "Folder",
+      "program": "Program",
+      "services": "Services",
+      "finish": "Shortcut"
+    },
+    "back": "Back",
+    "next": "Next",
+    "save": "Add app",
+    "saving": "Saving...",
+    "folder": {
+      "title": "Where is the program installed?",
+      "body": "Choose its own folder, such as C:\\Program Files (x86)\\National Instruments. Everything that runs from it belongs to the app.",
+      "choose": "Choose folder",
+      "change": "Choose another folder",
+      "pick": "The folder the program is installed in",
+      "scanning": "Looking for programs...",
+      "found": {
+        "one": "Found {count} program.",
+        "other": "Found {count} programs."
+      },
+      "cannot": "This folder cannot be an app's folder",
+      "noPrograms": "No programs in this folder",
+      "noProgramsBody": "Choose the folder the program's .exe file is in, or one above it."
+    },
+    "program": {
+      "title": "Which program should the shortcut open?",
+      "body": "The likely one is first. Updaters and uninstallers are hidden.",
+      "search": "Search programs",
+      "browse": "Choose another program",
+      "pick": "The program to open",
+      "console": "Console",
+      "showNoise": {
+        "one": "Show {count} more (updaters, uninstallers)",
+        "other": "Show {count} more (updaters, uninstallers)"
+      },
+      "hideNoise": "Hide updaters and uninstallers",
+      "name": "Name",
+      "nameHint": "The shortcut and STFD use this name.",
+      "args": "Arguments (optional)",
+      "argsHint": "Passed to the program when it opens."
+    },
+    "services": {
+      "title": "Which services come and go with it?",
+      "body": "These look like {name}'s: their programs are in its folders or come from the same publisher.",
+      "loading": "Reading the services...",
+      "failed": "The services could not be read",
+      "none": "No services look like the app's. You can add one.",
+      "found": {
+        "one": "{count} service, publisher {company}",
+        "other": "{count} services, publisher {company}"
+      },
+      "pickNamed": "Use {name}",
+      "startsWithWindows": "starts with Windows",
+      "why": {
+        "inFolder": "In its folder",
+        "samePublisher": "Same publisher",
+        "added": "Added by you"
+      },
+      "start": "Start them before {name} opens",
+      "stop": "Stop them after {name} closes",
+      "manual": {
+        "one": "Start {count} of them only when needed",
+        "other": "Start {count} of them only when needed"
+      },
+      "manualHint": "They start with Windows now. Set to start by hand, they run only while the app does.",
+      "vendor": "Folders of the same vendor",
+      "vendorHint": "Count these as part of the app too. Leave them out if they hold other programs you use on their own."
+    },
+    "finish": {
+      "title": "Shortcut and timing",
+      "shortcuts": "Shortcuts",
+      "replace": "Put STFD's shortcut in place of \"{file}\" on the desktop",
+      "public": "\"{file}\" is on the shared desktop",
+      "publicBody": "It opens the program without STFD. Delete it if you want only one.",
+      "permission": "Windows will ask once",
+      "permissionBody": "STFD needs an administrator's permission to start and stop these services. After that it does not ask again.",
+      "services": {
+        "one": "{count} service",
+        "other": "{count} services"
+      },
+      "folders": {
+        "one": "{count} folder",
+        "other": "{count} folders"
+      }
+    },
+    "saved": "{name} is ready.",
+    "savedDesktop": "{name} is ready. Open it with the new shortcut on your desktop.",
+    "savedNoPermission": "{name} is saved, but Windows did not get permission for its services. You can give it on the app's page.",
+    "savedProblems": {
+      "one": "{name} is saved; {count} thing did not work, see the app's page.",
+      "other": "{name} is saved; {count} things did not work, see the app's page."
+    }
+  },
+  "folder": {
+    "problem": {
+      "notAbsolute": "Choose a folder on a drive, like C:\\Program Files\\Vendor.",
+      "driveRoot": "A whole drive holds too much: choose the program's own folder.",
+      "system": "Windows' own folders cannot be used.",
+      "tooBroad": "This folder holds many unrelated programs: choose the program's own folder inside it.",
+      "own": "This is STFD's own folder."
+    }
+  },
+  "shortcut": {
+    "desktop": "On the desktop",
+    "startMenu": "In the Start menu"
+  },
+  "history": {
+    "title": "History",
+    "subtitle": "Every time an app closed: what started, what stopped, and what did not work.",
+    "empty": {
+      "title": "Nothing yet",
+      "body": "Each time an app closes, what STFD did shows up here."
+    },
+    "clear": "Clear history",
+    "clearConfirm": {
+      "title": "Clear the history?",
+      "body": "The list of what STFD did is deleted. Apps and their settings stay."
+    },
+    "outcome": {
+      "cleaned": "Cleaned up",
+      "nothing": "Nothing left",
+      "kept": "Left running",
+      "notOpened": "Did not open"
+    },
+    "trigger": {
+      "shortcut": "Opened with STFD",
+      "adopted": "Opened another way",
+      "manual": "Closed by you"
+    },
+    "openFor": "open {time}",
+    "started": {
+      "one": "started {count} service",
+      "other": "started {count} services"
+    },
+    "stopped": {
+      "one": "stopped {count} service",
+      "other": "stopped {count} services"
+    },
+    "closed": {
+      "one": "closed {count} program",
+      "other": "closed {count} programs"
+    },
+    "problems": {
+      "one": "{count} problem",
+      "other": "{count} problems"
+    },
+    "show": "Details",
+    "hide": "Hide details",
+    "startedList": "Started",
+    "stoppedList": "Stopped",
+    "closedList": "Closed when asked",
+    "endedList": "Ended",
+    "problemList": "Did not work"
+  },
+  "problem": {
+    "start_failed": "did not start: {detail}",
+    "stop_failed": "did not stop: {detail}",
+    "close_failed": "could not be closed: {detail}",
+    "access_denied": "Windows did not allow it (it runs as administrator or another account)",
+    "launch_failed": "the program did not open: {detail}",
+    "dependent_running": "left running because {detail} needs it",
+    "in_use": "left running because {detail} is open and uses it",
+    "service_process": "left running because it runs the {detail} service",
+    "other_user": "runs for another person on this computer",
+    "missing": "this service is not on this computer any more",
+    "permission_failed": "permission could not be changed: {detail}",
+    "shortcut_failed": "the shortcut could not be made: {detail}",
+    "shortcut_not_restored": "the original shortcut could not be put back; it is in {detail}"
+  },
+  "settings": {
+    "title": "Settings",
+    "closing": {
+      "title": "After an app closes"
+    },
+    "wait": "Wait before closing the rest",
+    "waitHint": "Each app can have its own wait. Opening it again during the wait keeps everything running.",
+    "polite": "Time a program gets to close on its own",
+    "politeHint": "After that it is ended.",
+    "notify": "Show a notification after closing",
+    "notifyHint": "A Windows notification says what was stopped and closed.",
+    "watch": {
+      "title": "Watching"
+    },
+    "watchAlways": "Also watch apps opened another way",
+    "watchHint": "Start menu, a file, the taskbar: STFD notices and closes what they leave too. It then starts with Windows and stays in the tray.",
+    "look": {
+      "title": "Language and look"
+    },
+    "language": "Language",
+    "theme": "Theme",
+    "system": "Like Windows",
+    "dark": "Dark",
+    "light": "Light",
+    "about": {
+      "title": "About",
+      "body": "STFD is short for Shut The Fluff Down: the fluff is everything a program leaves running for nothing. It grew out of two launcher scripts, for Ansys Electronics Desktop and Multisim, and does the same for any program. MIT license.",
+      "github": "Source on GitHub"
+    }
+  },
+  "status": {
+    "starting": "Starting...",
+    "idle": "No app open",
+    "following": "Following {names}",
+    "demo": "Simulated Windows",
+    "demoHint": "This page runs in a browser with made-up apps; it changes nothing.",
+    "version": "STFD {version}",
+    "github": "STFD on GitHub"
+  },
+  "errors": {
+    "unsupported": "STFD works on Windows.",
+    "invalid": "Something is missing or not valid: {detail}",
+    "not_found": "That app is not there any more.",
+    "folder_problem": "That folder cannot be used: {detail}",
+    "save_failed": "Could not save: {detail}",
+    "services_failed": "Could not read the services: {detail}",
+    "settings_not_saved": "Settings were not saved: {detail}",
+    "history_failed": "History could not be changed: {detail}",
+    "shortcut_failed": "The shortcut could not be made: {detail}",
+    "internal": "Something went wrong: {detail}"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "close": "Close",
+    "show": "Show in folder",
+    "clearSearch": "Clear search"
+  },
+  "time": {
+    "never": "never",
+    "now": "just now",
+    "minutesAgo": {
+      "one": "{count} min ago",
+      "other": "{count} min ago"
+    },
+    "hoursAgo": {
+      "one": "{count} h ago",
+      "other": "{count} h ago"
+    },
+    "daysAgo": {
+      "one": "{count} day ago",
+      "other": "{count} days ago"
+    },
+    "noWait": "No wait",
+    "seconds": {
+      "one": "{count} s",
+      "other": "{count} s"
+    },
+    "minutes": {
+      "one": "{count} min",
+      "other": "{count} min"
+    },
+    "hours": {
+      "one": "{count} h",
+      "other": "{count} h"
+    }
+  }
+}
