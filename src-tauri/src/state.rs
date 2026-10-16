@@ -19,6 +19,9 @@ pub struct Live {
     pub problems: Vec<Problem>,
     /// The program could not be opened.
     pub not_opened: bool,
+    /// Services are starting and the program is about to open: the watcher leaves the session
+    /// alone, and another launch of the same app waits for this one.
+    pub launching: bool,
 }
 
 #[derive(Clone, Debug, Serialize)]

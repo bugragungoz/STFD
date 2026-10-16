@@ -71,6 +71,7 @@ fn step(handle: &AppHandle, shared: &Arc<Shared>, cache: &mut process::PathCache
                     session: Session::adopted(&a.id, now),
                     problems: Vec::new(),
                     not_opened: false,
+                    launching: false,
                 },
             );
             let names = plan::to_start(a, &snap);
@@ -96,7 +97,7 @@ fn step(handle: &AppHandle, shared: &Arc<Shared>, cache: &mut process::PathCache
             let Some(app) = apps.iter().find(|a| &a.id == id) else {
                 continue;
             };
-            if live.session.is_cleaning() {
+            if live.session.is_cleaning() || live.launching {
                 continue;
             }
             let open = app.is_open(&snap.procs, own);
@@ -296,33 +297,42 @@ fn open_program(shared: &Shared, app: &App) {
 }
 
 fn launch_now(handle: &AppHandle, shared: &Arc<Shared>, app: &App) {
-    // Already followed: open the program again (or wait for a cleanup to finish first).
+    // Already followed: open the program again, once a cleanup in progress has finished. A launch
+    // still starting the services (the shortcut clicked twice) opens the program itself. Looking
+    // and taking the session happen under one lock, so two clicks never both start the services.
     let started_waiting = now_ms();
     loop {
-        let phase = lock(&shared.sessions).get(&app.id).map(|l| l.session.phase);
-        match phase {
-            Some(Phase::Cleaning) if now_ms() - started_waiting < 120_000 => {
+        let mut sessions = lock(&shared.sessions);
+        match sessions.get_mut(&app.id) {
+            None => {
+                sessions.insert(
+                    app.id.clone(),
+                    Live {
+                        session: Session::launched(&app.id, now_ms()),
+                        problems: Vec::new(),
+                        not_opened: false,
+                        launching: true,
+                    },
+                );
+                break;
+            }
+            Some(live) if live.launching => return,
+            Some(live) if live.session.is_cleaning() => {
+                drop(sessions);
+                if now_ms() - started_waiting > 120_000 {
+                    return;
+                }
                 std::thread::sleep(Duration::from_millis(300));
             }
-            Some(_) => {
-                if let Some(live) = lock(&shared.sessions).get_mut(&app.id) {
-                    live.session.relaunched(now_ms());
-                }
+            Some(live) => {
+                live.session.relaunched(now_ms());
+                drop(sessions);
                 open_program(shared, app);
                 return;
             }
-            None => break,
         }
     }
 
-    lock(&shared.sessions).insert(
-        app.id.clone(),
-        Live {
-            session: Session::launched(&app.id, now_ms()),
-            problems: Vec::new(),
-            not_opened: false,
-        },
-    );
     let snap = Snapshot {
         procs: Vec::new(),
         services: services::states().unwrap_or_default(),
@@ -355,6 +365,9 @@ fn launch_now(handle: &AppHandle, shared: &Arc<Shared>, app: &App) {
         live.session.relaunched(now_ms());
     }
     open_program(shared, app);
+    if let Some(live) = lock(&shared.sessions).get_mut(&app.id) {
+        live.launching = false;
+    }
 }
 
 /// "Close leftovers now" for an app that is not open, or "Close now" while it waits.
@@ -375,6 +388,7 @@ pub fn close_now(handle: &AppHandle, shared: &Arc<Shared>, id: &str) -> Option<H
                 session,
                 problems: Vec::new(),
                 not_opened: false,
+                launching: false,
             },
         );
     }
