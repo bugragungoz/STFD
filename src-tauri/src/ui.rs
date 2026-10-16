@@ -5,7 +5,7 @@
 use crate::lang;
 use crate::state::{lock, Shared};
 use std::sync::atomic::Ordering;
-use std::sync::Arc;
+use std::sync::{Arc, Mutex};
 use stfd_core::session::Phase;
 use tauri::menu::{Menu, MenuItem};
 use tauri::tray::{MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent};
@@ -63,27 +63,46 @@ pub fn create_tray(app: &AppHandle) -> tauri::Result<()> {
     Ok(())
 }
 
-/// Shows the tray icon while STFD works without being asked, with what it follows.
+/// What the tray shows; sent to the main thread only when it changes.
+static TRAY_SHOWN: Mutex<Option<(bool, String)>> = Mutex::new(None);
+
+/// Shows the tray icon while STFD works without being asked, with what it follows. Called by the
+/// watcher thread, which never waits for the main thread: the tray runs there, and the main thread
+/// may itself be waiting for the watcher's locks.
 pub fn update_tray(app: &AppHandle, shared: &Shared, now: u64) {
-    let Some(tray) = app.tray_by_id(TRAY) else { return };
     let settings = shared.settings();
-    let sessions = lock(&shared.sessions);
-    let visible = !sessions.is_empty() || settings.watch_always;
-    let _ = tray.set_visible(visible);
-    if !visible {
-        return;
-    }
+    let phases: Vec<(String, Phase)> = lock(&shared.sessions)
+        .iter()
+        .map(|(id, live)| (id.clone(), live.session.phase))
+        .collect();
+    let visible = !phases.is_empty() || settings.watch_always;
     let name = |id: &str| shared.app(id).map(|a| a.name).unwrap_or_default();
     let mut open = Vec::new();
     let mut closing = Vec::new();
-    for (id, live) in sessions.iter() {
-        match live.session.phase {
-            Phase::Closing { at, .. } => closing.push((name(id), at.saturating_sub(now).div_ceil(1000))),
-            _ => open.push(name(id)),
+    for (id, phase) in phases {
+        match phase {
+            Phase::Closing { at, .. } => closing.push((name(&id), at.saturating_sub(now).div_ceil(1000))),
+            _ => open.push(name(&id)),
         }
     }
-    drop(sessions);
-    let _ = tray.set_tooltip(Some(lang::pick(&settings.language).tooltip(&open, &closing)));
+    let tooltip = lang::pick(&settings.language).tooltip(&open, &closing);
+    let wanted = Some((visible, tooltip.clone()));
+    {
+        let mut shown = lock(&TRAY_SHOWN);
+        if *shown == wanted {
+            return;
+        }
+        *shown = wanted;
+    }
+    let handle = app.clone();
+    let _ = app.run_on_main_thread(move || {
+        if let Some(tray) = handle.tray_by_id(TRAY) {
+            let _ = tray.set_visible(visible);
+            if visible {
+                let _ = tray.set_tooltip(Some(tooltip));
+            }
+        }
+    });
 }
 
 /// A Windows notification, when the settings allow them.

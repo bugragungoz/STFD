@@ -22,12 +22,21 @@ const STEP: Duration = Duration::from_millis(1000);
 pub fn start(app: AppHandle, shared: Arc<Shared>) {
     std::thread::spawn(move || {
         let mut cache = process::PathCache::default();
+        let mut followed = usize::MAX;
         loop {
             step(&app, &shared, &mut cache);
+            let now_followed = lock(&shared.sessions).len();
+            if now_followed != followed {
+                trace!("following {now_followed} apps");
+                followed = now_followed;
+            }
             if !shared.busy() && !shared.window_open.load(Ordering::SeqCst) {
                 trace!("nothing left to follow: exiting");
                 app.exit(0);
-                return;
+                // The main thread ends the app; should it not get to it, end the process here.
+                std::thread::sleep(Duration::from_secs(5));
+                trace!("the main thread did not exit: ending the process");
+                std::process::exit(0);
             }
             std::thread::sleep(STEP);
         }
