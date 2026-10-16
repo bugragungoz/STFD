@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.1
+
+- The examples in the app, the screenshots and the tests use made-up programs and vendors instead
+  of real products.
+- The app's GitHub button and the download link point at the renamed repository.
+
 ## 1.0.0
 
 STFD replaces the two batch scripts this repository held with one app for any program.

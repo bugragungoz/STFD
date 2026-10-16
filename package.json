@@ -1,7 +1,7 @@
 {
   "name": "stfd",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "Shut The Fluff Down: opens a program with the services it needs and closes what it leaves behind.",
   "license": "MIT",
