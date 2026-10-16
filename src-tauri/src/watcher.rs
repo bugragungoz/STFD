@@ -117,6 +117,21 @@ fn step(handle: &AppHandle, shared: &Arc<Shared>, cache: &mut process::PathCache
                 continue;
             }
             let open = app.is_open(&snap.procs, own);
+            if let Phase::Starting { since } = live.session.phase {
+                // About every ten seconds while waiting, what runs under the program's name (with
+                // STFD_LOG set).
+                let waited = now.saturating_sub(since) / 1000;
+                if !open && waited > 0 && waited % 10 == 0 {
+                    let name = stfd_core::paths::file_name(&app.program);
+                    let seen: Vec<String> = snap
+                        .procs
+                        .iter()
+                        .filter(|p| p.name.eq_ignore_ascii_case(name))
+                        .map(|p| format!("{} {:?} windowed {}", p.pid, p.path, p.windowed))
+                        .collect();
+                    trace!("{id}: waiting for the program; running with its name: {seen:?}");
+                }
+            }
             live.session.note_seen(plan::seen(app, &snap, &shared.known, own));
             let change = live.session.step(open, now, app.wait_ms(&settings));
             if change != Change::None {
