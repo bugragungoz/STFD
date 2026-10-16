@@ -6,7 +6,7 @@ members = ["crates/stfd-core", "src-tauri"]
 version = "1.0.0"
 edition = "2021"
 license = "MIT"
-repository = "https://github.com/bugragungoz/smart-launcher-scripts"
+repository = "https://github.com/bugragungoz/STFD"
 
 [profile.release]
 codegen-units = 1

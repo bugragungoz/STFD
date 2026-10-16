@@ -45,7 +45,7 @@ services and closes the helpers it left running.
 
 ## Download
 
-From [Releases](https://github.com/bugragungoz/smart-launcher-scripts/releases): the `.exe`
+From [Releases](https://github.com/bugragungoz/STFD/releases): the `.exe`
 installer (for your account) or the `.msi` (for every account). Windows 10 and 11, 64-bit.
 
 ## Use
