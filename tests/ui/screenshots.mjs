@@ -1,4 +1,4 @@
-// The README screenshots, from the simulated Windows (made-up Multisim and Ansys installs).
+// The README screenshots, from the simulated Windows (made-up programs and vendors).
 //   npm run shots   ->  docs/images/*.png
 import { mkdir } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
@@ -29,14 +29,14 @@ const toServices = async (page) => {
   await page.getByText('Found 6 programs.').waitFor();
   await page.getByRole('button', { name: /^Next/ }).click();
   await page.getByRole('button', { name: /^Next/ }).click();
-  await page.getByText('7 services, publisher National Instruments').waitFor();
+  await page.getByText('7 services, publisher Example Labs').waitFor();
 };
 
 await shoot('apps', { scenario: 'closing' });
 await shoot('app', {
   scenario: 'closing',
   steps: async (page) => {
-    await card(page, 'Multisim 14.3').click();
+    await card(page, 'Circuit Simulator 14').click();
     await page.getByRole('heading', { name: 'Services' }).waitFor();
   },
 });

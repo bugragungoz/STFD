@@ -8,7 +8,7 @@ use serde::{Deserialize, Serialize};
 pub struct Proc {
     pub pid: u32,
     pub parent: u32,
-    /// The program's file name (`multisim.exe`).
+    /// The program's file name (`circuitsim.exe`).
     pub name: String,
     /// The program's full path; None when Windows does not say (System, protected processes).
     pub path: Option<String>,

@@ -1,5 +1,5 @@
-//! Publisher names from version resources, compared loosely: "ANSYS, Inc." and "Ansys Inc" are the
-//! same publisher.
+//! Publisher names from version resources, compared loosely: "Sample Systems, Inc." and
+//! "Sample Systems Inc" are the same publisher.
 
 const SUFFIXES: &[&str] = &[
     "inc",
@@ -59,11 +59,11 @@ mod tests {
 
     #[test]
     fn company_forms_and_punctuation_do_not_matter() {
-        assert_eq!(normalize("ANSYS, Inc."), "ansys");
-        assert!(same("ANSYS, Inc.", "Ansys Inc"));
-        assert!(same("National Instruments Corporation", "National Instruments"));
-        assert!(same("Valve Corp.", "Valve"));
-        assert!(!same("NI", "National Instruments"));
+        assert_eq!(normalize("Sample Systems, Inc."), "sample systems");
+        assert!(same("Sample Systems, Inc.", "Sample Systems Inc"));
+        assert!(same("Example Labs Corporation", "Example Labs"));
+        assert!(same("Example Games Corp.", "Example Games"));
+        assert!(!same("EL", "Example Labs"));
         assert!(!same("", ""));
         assert_eq!(normalize("Co"), "co", "a single word stays");
     }
@@ -72,6 +72,6 @@ mod tests {
     fn microsoft_is_recognised() {
         assert!(is_microsoft("Microsoft Corporation"));
         assert!(is_microsoft("Microsoft Windows Publisher"));
-        assert!(!is_microsoft("ANSYS, Inc."));
+        assert!(!is_microsoft("Sample Systems, Inc."));
     }
 }

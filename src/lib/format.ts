@@ -43,7 +43,7 @@ export function formatSpan(ms: number): string {
   return rest ? `${t('time.hours', { count: h })} ${t('time.minutes', { count: rest })}` : t('time.hours', { count: h });
 }
 
-/** A path relative to a folder it is in: `Circuit Design Suite 14.3\multisim.exe`. */
+/** A path relative to a folder it is in: `Circuit Simulator 14\circuitsim.exe`. */
 export function relativeTo(path: string, folder: string): string {
   const f = folder.replace(/[\\/]+$/, '');
   return path.toLowerCase().startsWith(f.toLowerCase() + '\\') ? path.slice(f.length + 1) : path;

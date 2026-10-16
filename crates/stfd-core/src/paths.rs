@@ -61,7 +61,7 @@ pub fn is_inside(path: &str, folder: &str) -> bool {
     p == f || (p.starts_with(&f) && p.as_bytes().get(f.len()) == Some(&b'\\'))
 }
 
-/// The last part of a path: `multisim.exe` for `C:\NI\multisim.exe`.
+/// The last part of a path: `circuitsim.exe` for `C:\Lab\circuitsim.exe`.
 pub fn file_name(path: &str) -> &str {
     path.rsplit(['\\', '/']).next().unwrap_or(path)
 }
@@ -186,9 +186,9 @@ pub fn is_system(path: &str, known: &KnownFolders) -> bool {
     !known.windows.is_empty() && is_inside(path, &known.windows)
 }
 
-/// Folders of the same vendor elsewhere: for `C:\Program Files (x86)\National Instruments\Circuit
-/// Design Suite 14.3`, the `National Instruments` folders under the other Program Files, Common Files
-/// and ProgramData that `exists` finds. Many vendors keep their services there.
+/// Folders of the same vendor elsewhere: for `C:\Program Files (x86)\Example Labs\Circuit
+/// Simulator 14`, the `Example Labs` folders under the other Program Files, Common Files and
+/// ProgramData that `exists` finds. Many vendors keep their services there.
 pub fn vendor_folders(folder: &str, known: &KnownFolders, exists: impl Fn(&str) -> bool) -> Vec<String> {
     let roots: Vec<&str> = known
         .program_files
@@ -259,21 +259,21 @@ mod tests {
 
     #[test]
     fn paths_compare_without_case_slashes_prefixes_or_trailing_backslashes() {
-        assert_eq!(normalize("C:/Program Files//NI\\"), "c:\\program files\\ni");
+        assert_eq!(normalize("C:/Program Files//Lab\\"), "c:\\program files\\lab");
         assert_eq!(normalize("\\\\?\\C:\\Tools\\a.exe"), "c:\\tools\\a.exe");
         assert_eq!(normalize("\\\\?\\UNC\\server\\share\\x"), "\\\\server\\share\\x");
         assert_eq!(normalize("c:"), "c:\\");
         assert_eq!(normalize("C:\\"), "c:\\");
-        assert!(same("C:\\NI\\Multisim.EXE", "c:/ni/multisim.exe"));
+        assert!(same("C:\\Lab\\CircuitSim.EXE", "c:/lab/circuitsim.exe"));
     }
 
     #[test]
     fn inside_means_the_folder_or_under_it_not_a_name_that_starts_the_same() {
-        assert!(is_inside("C:\\Program Files\\NI\\a.exe", "c:\\program files\\ni"));
-        assert!(is_inside("C:\\Program Files\\NI", "C:\\Program Files\\NI\\"));
+        assert!(is_inside("C:\\Program Files\\Lab\\a.exe", "c:\\program files\\lab"));
+        assert!(is_inside("C:\\Program Files\\Lab", "C:\\Program Files\\Lab\\"));
         assert!(!is_inside(
-            "C:\\Program Files\\NI Tools\\a.exe",
-            "C:\\Program Files\\NI"
+            "C:\\Program Files\\Lab Tools\\a.exe",
+            "C:\\Program Files\\Lab"
         ));
         assert!(is_inside("D:\\Games\\x.exe", "D:\\"));
         assert!(!is_inside("C:\\a.exe", ""));
@@ -281,17 +281,20 @@ mod tests {
 
     #[test]
     fn names_and_parents() {
-        assert_eq!(file_name("C:\\NI\\multisim.exe"), "multisim.exe");
-        assert_eq!(file_name("multisim.exe"), "multisim.exe");
-        assert_eq!(parent("C:\\NI\\multisim.exe"), Some("C:\\NI"));
-        assert_eq!(parent("C:\\NI"), Some("C:\\"));
-        assert_eq!(parent("multisim.exe"), None);
+        assert_eq!(file_name("C:\\Lab\\circuitsim.exe"), "circuitsim.exe");
+        assert_eq!(file_name("circuitsim.exe"), "circuitsim.exe");
+        assert_eq!(parent("C:\\Lab\\circuitsim.exe"), Some("C:\\Lab"));
+        assert_eq!(parent("C:\\Lab"), Some("C:\\"));
+        assert_eq!(parent("circuitsim.exe"), None);
         assert!(is_absolute("C:\\x") && is_absolute("\\\\srv\\share") && !is_absolute("x\\y") && !is_absolute("C:x"));
     }
 
     #[test]
     fn shortcut_names_are_valid_file_names() {
-        assert_eq!(shortcut_file_name("Multisim 14.3"), "Multisim 14.3.lnk");
+        assert_eq!(
+            shortcut_file_name("Circuit Simulator 14.3"),
+            "Circuit Simulator 14.3.lnk"
+        );
         assert_eq!(shortcut_file_name("A/B: C?"), "A B C.lnk");
         assert_eq!(shortcut_file_name("Name..."), "Name.lnk");
         assert_eq!(shortcut_file_name(" \t "), "App.lnk");
@@ -300,13 +303,10 @@ mod tests {
     #[test]
     fn a_vendor_folder_can_be_watched() {
         let k = known();
-        assert_eq!(
-            check_folder("C:\\Program Files (x86)\\National Instruments", &k),
-            Ok(())
-        );
-        assert_eq!(check_folder("C:\\Program Files\\AnsysEM\\v241", &k), Ok(()));
+        assert_eq!(check_folder("C:\\Program Files (x86)\\Example Labs", &k), Ok(()));
+        assert_eq!(check_folder("C:\\Program Files\\Field Solver\\v241", &k), Ok(()));
         assert_eq!(check_folder("D:\\Games\\Some Game", &k), Ok(()));
-        assert_eq!(check_folder("C:\\Users\\bugra\\AppData\\Local\\Discord", &k), Ok(()));
+        assert_eq!(check_folder("C:\\Users\\bugra\\AppData\\Local\\Chat App", &k), Ok(()));
     }
 
     #[test]
@@ -342,7 +342,7 @@ mod tests {
     fn windows_programs_are_system() {
         let k = known();
         assert!(is_system("C:\\WINDOWS\\explorer.exe", &k));
-        assert!(!is_system("C:\\Program Files\\NI\\x.exe", &k));
+        assert!(!is_system("C:\\Program Files\\Lab\\x.exe", &k));
         assert!(!is_system("C:\\x.exe", &KnownFolders::default()));
     }
 
@@ -351,24 +351,24 @@ mod tests {
         let k = known();
         let exists = |p: &str| {
             [
-                "C:\\Program Files\\National Instruments",
-                "C:\\Program Files (x86)\\Common Files\\National Instruments",
-                "C:\\ProgramData\\National Instruments",
+                "C:\\Program Files\\Example Labs",
+                "C:\\Program Files (x86)\\Common Files\\Example Labs",
+                "C:\\ProgramData\\Example Labs",
             ]
             .iter()
             .any(|e| same(e, p))
         };
         let found = vendor_folders(
-            "C:\\Program Files (x86)\\National Instruments\\Circuit Design Suite 14.3",
+            "C:\\Program Files (x86)\\Example Labs\\Circuit Simulator 14",
             &k,
             exists,
         );
         assert_eq!(
             found,
             vec![
-                "C:\\Program Files\\National Instruments",
-                "C:\\Program Files (x86)\\Common Files\\National Instruments",
-                "C:\\ProgramData\\National Instruments",
+                "C:\\Program Files\\Example Labs",
+                "C:\\Program Files (x86)\\Common Files\\Example Labs",
+                "C:\\ProgramData\\Example Labs",
             ]
         );
         assert!(vendor_folders("D:\\Games\\X", &k, |_| true).is_empty());

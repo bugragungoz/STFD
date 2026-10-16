@@ -179,9 +179,9 @@ mod tests {
     #[test]
     fn cleanup_notices_say_what_happened() {
         assert_eq!(
-            Lang::En.cleaned("Multisim", 7, 1, 0),
+            Lang::En.cleaned("Circuit Simulator", 7, 1, 0),
             (
-                "Multisim closed".to_string(),
+                "Circuit Simulator closed".to_string(),
                 "Stopped 7 services and closed 1 program.".to_string()
             )
         );
@@ -190,9 +190,9 @@ mod tests {
             "Closed 2 programs. 1 could not be closed; see History."
         );
         assert_eq!(
-            Lang::Tr.cleaned("Multisim", 7, 2, 0),
+            Lang::Tr.cleaned("Circuit Simulator", 7, 2, 0),
             (
-                "Multisim kapandı".to_string(),
+                "Circuit Simulator kapandı".to_string(),
                 "7 hizmet durduruldu, 2 program kapatıldı.".to_string()
             )
         );
@@ -206,8 +206,8 @@ mod tests {
     fn the_tooltip_lists_what_is_followed_and_stays_short() {
         assert_eq!(Lang::En.tooltip(&[], &[]), "STFD\nWatching your apps");
         assert_eq!(
-            Lang::En.tooltip(&["Multisim".into()], &[("Ansys".into(), 25)]),
-            "STFD\nAnsys: closing the rest in 25 s\nFollowing Multisim"
+            Lang::En.tooltip(&["Circuit Simulator".into()], &[("Field Solver".into(), 25)]),
+            "STFD\nField Solver: closing the rest in 25 s\nFollowing Circuit Simulator"
         );
         let many: Vec<String> = (0..40).map(|i| format!("App number {i}")).collect();
         assert!(Lang::Tr.tooltip(&many, &[]).chars().count() <= 120);

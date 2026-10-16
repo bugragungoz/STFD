@@ -175,26 +175,26 @@ mod tests {
             "unins000.exe",
             "Uninstall.exe",
             "setup.exe",
-            "NIUpdateService.exe",
+            "ELUpdateService.exe",
             "crashpad_handler.exe",
             "vc_redist.x64.exe",
-            "Discord Helper.exe",
+            "Chat Helper.exe",
         ] {
             assert!(is_noise(n), "{n}");
         }
-        for n in ["multisim.exe", "ansysedt.exe", "steam.exe"] {
+        for n in ["circuitsim.exe", "fieldsolver.exe", "game.exe"] {
             assert!(!is_noise(n), "{n}");
         }
     }
 
     #[test]
     fn the_main_program_comes_first() {
-        let folder = "C:\\Program Files (x86)\\National Instruments\\Circuit Design Suite 14.3";
+        let folder = "C:\\Program Files (x86)\\Example Labs\\Circuit Simulator 14";
         let mut files = vec![
             exe(&format!("{folder}\\unins000.exe"), 3_000_000, 0, Some(true)),
             exe(&format!("{folder}\\tools\\convert.exe"), 400_000, 1, Some(false)),
-            exe(&format!("{folder}\\ultiboard.exe"), 30_000_000, 0, Some(true)),
-            exe(&format!("{folder}\\multisim.exe"), 60_000_000, 0, Some(true)),
+            exe(&format!("{folder}\\boarddesigner.exe"), 30_000_000, 0, Some(true)),
+            exe(&format!("{folder}\\circuitsim.exe"), 60_000_000, 0, Some(true)),
             exe(&format!("{folder}\\deep\\a\\b\\viewer.exe"), 90_000_000, 3, Some(true)),
         ];
         rank(&mut files, folder);
@@ -202,8 +202,8 @@ mod tests {
         assert_eq!(
             names,
             vec![
-                "multisim.exe",
-                "ultiboard.exe",
+                "circuitsim.exe",
+                "boarddesigner.exe",
                 "viewer.exe",
                 "convert.exe",
                 "unins000.exe"
@@ -213,13 +213,13 @@ mod tests {
 
     #[test]
     fn a_name_like_the_folders_wins_among_equals() {
-        let folder = "D:\\Games\\Hollow Knight";
+        let folder = "D:\\Games\\Sample Game";
         let mut files = vec![
             exe(&format!("{folder}\\launcher.exe"), 5_000_000, 0, Some(true)),
-            exe(&format!("{folder}\\hollow_knight.exe"), 5_000_000, 0, Some(true)),
+            exe(&format!("{folder}\\sample_game.exe"), 5_000_000, 0, Some(true)),
         ];
         rank(&mut files, folder);
-        assert_eq!(paths::file_name(&files[0].path), "hollow_knight.exe");
+        assert_eq!(paths::file_name(&files[0].path), "sample_game.exe");
     }
 
     #[test]
