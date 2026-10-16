@@ -116,7 +116,8 @@ fn the_shortcut_opens_the_program_and_stfd_closes_what_it_left() {
         running(&program).iter().any(|p| windowed.contains(&p.pid))
     });
 
-    // The person closes the program.
+    // The person uses the program for a moment (STFD looks once a second), then closes it.
+    std::thread::sleep(Duration::from_secs(3));
     for p in running(&program) {
         process::ask_to_close(p.pid);
     }
