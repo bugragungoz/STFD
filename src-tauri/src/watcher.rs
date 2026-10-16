@@ -25,6 +25,7 @@ pub fn start(app: AppHandle, shared: Arc<Shared>) {
         loop {
             step(&app, &shared, &mut cache);
             if !shared.busy() && !shared.window_open.load(Ordering::SeqCst) {
+                trace!("nothing left to follow: exiting");
                 app.exit(0);
                 return;
             }
@@ -50,7 +51,13 @@ fn others_open(shared: &Shared, apps: &[App], snap: &Snapshot, except: &str) -> 
 fn step(handle: &AppHandle, shared: &Arc<Shared>, cache: &mut process::PathCache) {
     let now = now_ms();
     let own = process::own_pid();
-    let Ok(procs) = cache.processes() else { return };
+    let procs = match cache.processes() {
+        Ok(p) => p,
+        Err(e) => {
+            trace!("reading the processes failed: {e}");
+            return;
+        }
+    };
     let snap = Snapshot {
         procs,
         services: services::states().unwrap_or_default(),
@@ -102,7 +109,11 @@ fn step(handle: &AppHandle, shared: &Arc<Shared>, cache: &mut process::PathCache
             }
             let open = app.is_open(&snap.procs, own);
             live.session.note_seen(plan::seen(app, &snap, &shared.known, own));
-            if live.session.step(open, now, app.wait_ms(&settings)) == Change::Cleanup {
+            let change = live.session.step(open, now, app.wait_ms(&settings));
+            if change != Change::None {
+                trace!("{id}: {change:?}");
+            }
+            if change == Change::Cleanup {
                 cleanups.push(id.clone());
             }
         }
@@ -208,6 +219,11 @@ pub fn cleanup(handle: &AppHandle, shared: &Arc<Shared>, id: &str) -> Option<His
         others_open: &others,
     };
     let plan = plan::cleanup(&app, &snap, &ctx);
+    trace!(
+        "{id}: closing {} programs and {} services",
+        plan.programs.len(),
+        plan.services.len()
+    );
     let done = execute::close(
         &plan,
         &snap.services,
@@ -250,6 +266,12 @@ pub fn cleanup(handle: &AppHandle, shared: &Arc<Shared>, id: &str) -> Option<His
         a.remember(&live.session.seen);
     });
     lock(&shared.sessions).remove(id);
+    trace!(
+        "{id}: {outcome:?}, closed {:?}, ended {:?}, stopped {:?}",
+        done.closed,
+        done.ended,
+        done.stopped
+    );
 
     let words = lang::pick(&settings.language);
     if outcome == Outcome::NotOpened {
@@ -284,6 +306,11 @@ fn open_program(shared: &Shared, app: &App) {
         Ok(Opened::Cancelled) => Some("cancelled".to_string()),
         Err(e) => Some(e.to_string()),
     };
+    trace!(
+        "{}: opening the program: {}",
+        app.id,
+        failed.as_deref().unwrap_or("done")
+    );
     let Some(detail) = failed else { return };
     if let Some(live) = lock(&shared.sessions).get_mut(&app.id) {
         live.session.launch_failed(now_ms());

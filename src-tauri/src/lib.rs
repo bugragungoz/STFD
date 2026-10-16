@@ -6,6 +6,16 @@
 // Most of the shell only does something on Windows.
 #![cfg_attr(not(windows), allow(dead_code))]
 
+/// What Lockstep does, on stderr, when LOCKSTEP_LOG is set (the end-to-end test sets it). Release
+/// builds have no console, so it costs nothing there.
+macro_rules! trace {
+    ($($arg:tt)*) => {
+        if std::env::var_os("LOCKSTEP_LOG").is_some() {
+            eprintln!("lockstep: {}", format!($($arg)*));
+        }
+    };
+}
+
 mod commands;
 mod lang;
 #[cfg(windows)]
@@ -56,6 +66,7 @@ fn handle(app: &AppHandle, start: Start) {
 
 pub fn run(args: Vec<String>) {
     let start = parse(&args);
+    trace!("start {start:?}");
     tauri::Builder::default()
         .plugin(tauri_plugin_single_instance::init(|app, argv, _cwd| {
             handle(app, parse(argv.get(1..).unwrap_or(&[])));
@@ -119,6 +130,7 @@ pub fn run(args: Vec<String>) {
         .run(|app, event| {
             // Closing the window does not end Lockstep while it follows an app.
             if let RunEvent::ExitRequested { api, code, .. } = event {
+                trace!("exit requested ({code:?})");
                 if code.is_none() && app.state::<Arc<Shared>>().busy() {
                     api.prevent_exit();
                 }

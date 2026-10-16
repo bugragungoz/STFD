@@ -105,7 +105,12 @@ fn the_shortcut_opens_the_program_and_lockstep_closes_what_it_left() {
     // A helper of the app left running from an earlier time.
     let mut left = Command::new(&helper).arg("background").spawn().unwrap();
 
-    let mut lockstep = Command::new(APP).args(["--run", "e2e"]).spawn().unwrap();
+    // Lockstep says what it does on stderr, which goes to the test's output.
+    let mut lockstep = Command::new(APP)
+        .args(["--run", "e2e"])
+        .env("LOCKSTEP_LOG", "1")
+        .spawn()
+        .unwrap();
     wait_until("the program's window", Duration::from_secs(60), || {
         let windowed = process::windowed_pids();
         running(&program).iter().any(|p| windowed.contains(&p.pid))
@@ -123,9 +128,14 @@ fn the_shortcut_opens_the_program_and_lockstep_closes_what_it_left() {
             break s;
         }
         if start.elapsed() > Duration::from_secs(90) {
+            let program_left = running(&program).len();
+            let helper_left = running(&helper).len();
+            let history = std::fs::read_to_string(data.join("history.json")).unwrap_or_else(|e| e.to_string());
             let _ = lockstep.kill();
             let _ = left.kill();
-            panic!("Lockstep did not exit after the program closed");
+            panic!(
+                "Lockstep did not exit after the program closed: program still running {program_left}, helper {helper_left}, history {history}"
+            );
         }
         std::thread::sleep(Duration::from_millis(250));
     };

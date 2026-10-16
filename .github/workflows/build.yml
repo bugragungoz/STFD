@@ -60,7 +60,7 @@ jobs:
       - run: cargo clippy --workspace --all-targets -- -D warnings
 
       - name: Unit tests and the tests against the real system
-        run: cargo test --workspace -- --include-ignored --test-threads=1
+        run: cargo test --workspace --no-fail-fast -- --include-ignored --test-threads=1 --nocapture
 
       - name: Installers
         run: npx tauri build
