@@ -29,8 +29,8 @@ describe('format', () => {
   });
 
   it('shows paths relative to the folder they are in', () => {
-    expect(relativeTo('C:\\NI\\Suite\\multisim.exe', 'c:\\ni\\')).toBe('Suite\\multisim.exe');
-    expect(relativeTo('D:\\Other\\x.exe', 'C:\\NI')).toBe('D:\\Other\\x.exe');
-    expect(fileName('C:\\NI\\multisim.exe')).toBe('multisim.exe');
+    expect(relativeTo('C:\\Lab\\Suite\\circuitsim.exe', 'c:\\lab\\')).toBe('Suite\\circuitsim.exe');
+    expect(relativeTo('D:\\Other\\x.exe', 'C:\\Lab')).toBe('D:\\Other\\x.exe');
+    expect(fileName('C:\\Lab\\circuitsim.exe')).toBe('circuitsim.exe');
   });
 });

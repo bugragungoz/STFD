@@ -205,7 +205,7 @@
     "saving": "Saving...",
     "folder": {
       "title": "Where is the program installed?",
-      "body": "Choose its own folder, such as C:\\Program Files (x86)\\National Instruments. Everything that runs from it belongs to the app.",
+      "body": "Choose its own folder, usually its vendor's folder in C:\\Program Files. Everything that runs from it belongs to the app.",
       "choose": "Choose folder",
       "change": "Choose another folder",
       "pick": "The folder the program is installed in",
@@ -389,7 +389,7 @@
     "light": "Light",
     "about": {
       "title": "About",
-      "body": "STFD is short for Shut The Fluff Down: the fluff is everything a program leaves running for nothing. It grew out of two launcher scripts, for Ansys Electronics Desktop and Multisim, and does the same for any program. MIT license.",
+      "body": "STFD is short for Shut The Fluff Down: the fluff is everything a program leaves running for nothing. It grew out of two launcher scripts written for two engineering programs, and does the same for any program. MIT license.",
       "github": "Source on GitHub"
     }
   },

@@ -133,19 +133,19 @@ mod tests {
 
     #[test]
     fn quoted_unquoted_and_system_paths() {
-        let exists = |p: &str| p == "C:\\Program Files\\ANSYS Inc\\Shared Files\\Licensing\\winx64\\lmgrd.exe";
+        let exists = |p: &str| p == "C:\\Program Files\\Sample Systems\\Shared Files\\Licensing\\winx64\\licmgr.exe";
         assert_eq!(
-            program_of("\"C:\\Program Files\\NI\\nisvc.exe\" -service", WIN, |_| false).as_deref(),
-            Some("C:\\Program Files\\NI\\nisvc.exe")
+            program_of("\"C:\\Program Files\\Lab\\labsvc.exe\" -service", WIN, |_| false).as_deref(),
+            Some("C:\\Program Files\\Lab\\labsvc.exe")
         );
         assert_eq!(
             program_of(
-                "C:\\Program Files\\ANSYS Inc\\Shared Files\\Licensing\\winx64\\lmgrd.exe -c x.lic -l log.txt",
+                "C:\\Program Files\\Sample Systems\\Shared Files\\Licensing\\winx64\\licmgr.exe -c x.lic -l log.txt",
                 WIN,
                 exists
             )
             .as_deref(),
-            Some("C:\\Program Files\\ANSYS Inc\\Shared Files\\Licensing\\winx64\\lmgrd.exe")
+            Some("C:\\Program Files\\Sample Systems\\Shared Files\\Licensing\\winx64\\licmgr.exe")
         );
         assert_eq!(
             program_of("C:\\Program Files\\My App\\svc.exe -x", WIN, |_| false).as_deref(),
@@ -193,20 +193,20 @@ mod tests {
         let services = vec![
             info(
                 "Zeta",
-                Some("C:\\Program Files\\AnsysEM\\v241\\zeta.exe"),
+                Some("C:\\Program Files\\Field Solver\\v241\\zeta.exe"),
                 None,
-                Some("ANSYS, Inc."),
+                Some("Sample Systems, Inc."),
             ),
             info(
                 "Licensing",
-                Some("C:\\Program Files\\ANSYS Inc\\Shared Files\\lmgrd.exe"),
+                Some("C:\\Program Files\\Sample Systems\\Shared Files\\licmgr.exe"),
                 None,
-                Some("ANSYS Inc"),
+                Some("Sample Systems Inc"),
             ),
             info(
                 "Hosted",
                 Some("C:\\Windows\\System32\\svchost.exe"),
-                Some("C:\\Program Files\\AnsysEM\\x.dll"),
+                Some("C:\\Program Files\\Field Solver\\x.dll"),
                 None,
             ),
             info(
@@ -215,13 +215,18 @@ mod tests {
                 None,
                 Some("Microsoft Corporation"),
             ),
-            info("WinAnsys", Some("C:\\Windows\\ansys.exe"), None, Some("ANSYS, Inc.")),
+            info(
+                "WinSample",
+                Some("C:\\Windows\\sample.exe"),
+                None,
+                Some("Sample Systems, Inc."),
+            ),
             info("Other", Some("C:\\Program Files\\Other\\o.exe"), None, Some("Other Co")),
         ];
         let found = related(
             &services,
-            &["C:\\Program Files\\AnsysEM".into()],
-            Some("ANSYS, Inc."),
+            &["C:\\Program Files\\Field Solver".into()],
+            Some("Sample Systems, Inc."),
             &known,
         );
         let names: Vec<_> = found.iter().map(|s| (s.service.name.as_str(), s.why)).collect();

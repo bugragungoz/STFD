@@ -255,7 +255,7 @@ mod tests {
     use crate::model::{App, ServiceRule};
     use crate::snapshot::{Service, SvcState};
 
-    const NI: &str = "C:\\Program Files (x86)\\National Instruments";
+    const LAB: &str = "C:\\Program Files (x86)\\Example Labs";
 
     fn known() -> KnownFolders {
         KnownFolders {
@@ -277,10 +277,10 @@ mod tests {
     fn app(services: &[&str]) -> App {
         App {
             id: "ms".into(),
-            name: "Multisim".into(),
-            program: format!("{NI}\\Circuit Design Suite 14.3\\multisim.exe"),
+            name: "Circuit Simulator".into(),
+            program: format!("{LAB}\\Circuit Simulator 14\\circuitsim.exe"),
             arguments: String::new(),
-            folders: vec![NI.into()],
+            folders: vec![LAB.into()],
             services: services.iter().map(|s| rule(s)).collect(),
             also_close: vec![],
             keep: vec![],
@@ -328,10 +328,10 @@ mod tests {
         let k = known();
         let snap = Snapshot {
             procs: vec![
-                proc(10, 1, &format!("{NI}\\Shared\\nisvcloc.exe")),
-                proc(11, 1, &format!("{NI}\\Shared\\NIUpdate.exe")),
+                proc(10, 1, &format!("{LAB}\\Shared\\elsvcloc.exe")),
+                proc(11, 1, &format!("{LAB}\\Shared\\ELUpdate.exe")),
                 proc(12, 1, "C:\\Program Files\\Other\\other.exe"),
-                proc(99, 1, &format!("{NI}\\stfd-here.exe")),
+                proc(99, 1, &format!("{LAB}\\stfd-here.exe")),
                 Proc {
                     path: None,
                     ..proc(13, 1, "x")
@@ -341,7 +341,7 @@ mod tests {
         };
         let plan = cleanup(&app(&[]), &snap, &ctx(&k, &[]));
         let names: Vec<_> = plan.programs.iter().map(|t| t.name.as_str()).collect();
-        assert_eq!(names, vec!["nisvcloc.exe", "NIUpdate.exe"]);
+        assert_eq!(names, vec!["elsvcloc.exe", "ELUpdate.exe"]);
         assert!(plan.services.is_empty() && plan.skipped.is_empty());
     }
 
@@ -351,7 +351,7 @@ mod tests {
         let mut a = app(&[]);
         a.close_programs = false;
         let snap = Snapshot {
-            procs: vec![proc(10, 1, &format!("{NI}\\Shared\\x.exe"))],
+            procs: vec![proc(10, 1, &format!("{LAB}\\Shared\\x.exe"))],
             services: vec![],
         };
         assert!(cleanup(&a, &snap, &ctx(&k, &[])).is_empty());
@@ -362,15 +362,15 @@ mod tests {
         let k = known();
         let mut a = app(&[]);
         a.also_close = vec!["C:\\Windows\\System32\\notepad.exe".into()];
-        a.keep = vec![format!("{NI}\\MAX\\NIMax.exe")];
+        a.keep = vec![format!("{LAB}\\Explorer\\hwexplorer.exe")];
         let snap = Snapshot {
             procs: vec![
                 proc(10, 1, "C:\\Windows\\System32\\notepad.exe"),
                 Proc {
                     session: 2,
-                    ..proc(11, 1, &format!("{NI}\\Shared\\x.exe"))
+                    ..proc(11, 1, &format!("{LAB}\\Shared\\x.exe"))
                 },
-                proc(12, 1, &format!("{NI}\\MAX\\NIMax.exe")),
+                proc(12, 1, &format!("{LAB}\\Explorer\\hwexplorer.exe")),
             ],
             services: vec![],
         };
@@ -394,19 +394,19 @@ mod tests {
     #[test]
     fn running_services_stop_after_the_ones_that_need_them() {
         let k = known();
-        let a = app(&["NIDomainService", "NIAuthService", "NIStopped", "NINotInstalled"]);
+        let a = app(&["ELDomainService", "ELAuthService", "ELStopped", "ELNotInstalled"]);
         let snap = Snapshot {
             procs: vec![],
             services: vec![
-                svc("NIDomainService", SvcState::Running, 20, &[]),
-                svc("NIAuthService", SvcState::Running, 21, &["nidomainservice"]),
-                svc("NIStopped", SvcState::Stopped, 0, &[]),
+                svc("ELDomainService", SvcState::Running, 20, &[]),
+                svc("ELAuthService", SvcState::Running, 21, &["eldomainservice"]),
+                svc("ELStopped", SvcState::Stopped, 0, &[]),
             ],
         };
         let plan = cleanup(&a, &snap, &ctx(&k, &[]));
-        assert_eq!(plan.services, vec!["NIAuthService", "NIDomainService"]);
+        assert_eq!(plan.services, vec!["ELAuthService", "ELDomainService"]);
         assert!(plan.skipped.is_empty());
-        assert_eq!(missing_services(&a, &snap), vec!["NINotInstalled display"]);
+        assert_eq!(missing_services(&a, &snap), vec!["ELNotInstalled display"]);
     }
 
     #[test]
@@ -445,27 +445,27 @@ mod tests {
     #[test]
     fn what_another_open_app_uses_stays() {
         let k = known();
-        let a = app(&["NIDomainService"]);
-        let mut labview = app(&["NIDomainService"]);
-        labview.name = "LabVIEW".into();
+        let a = app(&["ELDomainService"]);
+        let mut bench = app(&["ELDomainService"]);
+        bench.name = "Bench".into();
         let snap = Snapshot {
-            procs: vec![proc(10, 1, &format!("{NI}\\Shared\\x.exe"))],
-            services: vec![svc("NIDomainService", SvcState::Running, 20, &[])],
+            procs: vec![proc(10, 1, &format!("{LAB}\\Shared\\x.exe"))],
+            services: vec![svc("ELDomainService", SvcState::Running, 20, &[])],
         };
-        let others = [labview];
+        let others = [bench];
         let plan = cleanup(&a, &snap, &ctx(&k, &others));
         assert!(plan.is_empty());
         assert_eq!(plan.skipped.len(), 2);
         assert!(plan
             .skipped
             .iter()
-            .all(|s| s.reason == Skip::InUse { app: "LabVIEW".into() }));
+            .all(|s| s.reason == Skip::InUse { app: "Bench".into() }));
     }
 
     #[test]
     fn a_service_process_goes_with_its_services_or_stays_with_them() {
         let k = known();
-        let host = format!("{NI}\\Shared\\nisvchost.exe");
+        let host = format!("{LAB}\\Shared\\elsvchost.exe");
         let snap = Snapshot {
             procs: vec![proc(20, 1, &host)],
             services: vec![
@@ -483,7 +483,7 @@ mod tests {
         assert_eq!(
             plan.skipped,
             vec![Skipped {
-                what: "nisvchost.exe".into(),
+                what: "elsvchost.exe".into(),
                 reason: Skip::ServiceProcess {
                     service: "B display".into()
                 }
@@ -516,7 +516,7 @@ mod tests {
         };
         let snap = Snapshot {
             procs: vec![
-                proc(11, 10, &format!("{NI}\\Shared\\helper.exe")),
+                proc(11, 10, &format!("{LAB}\\Shared\\helper.exe")),
                 main,
                 proc(12, 10, "C:\\Users\\b\\AppData\\Local\\Crash\\reporter.exe"),
                 proc(13, 10, "C:\\Windows\\System32\\conhost.exe"),
@@ -525,11 +525,11 @@ mod tests {
             services: vec![],
         };
         let names: Vec<_> = running(&a, &snap, 99).into_iter().map(|t| t.name).collect();
-        assert_eq!(names, vec!["multisim.exe", "helper.exe"]);
+        assert_eq!(names, vec!["circuitsim.exe", "helper.exe"]);
         assert_eq!(
             seen(&a, &snap, &k, 99),
             vec![
-                format!("{NI}\\Shared\\helper.exe"),
+                format!("{LAB}\\Shared\\helper.exe"),
                 a.program.clone(),
                 "C:\\Users\\b\\AppData\\Local\\Crash\\reporter.exe".to_string(),
             ]

@@ -205,7 +205,7 @@
     "saving": "Kaydediliyor...",
     "folder": {
       "title": "Program nereye kurulu?",
-      "body": "Kendi klasörünü seçin, örneğin C:\\Program Files (x86)\\National Instruments. Oradan çalışan her şey uygulamaya aittir.",
+      "body": "Kendi klasörünü seçin; genellikle C:\\Program Files içindeki üreticisinin klasörü. Oradan çalışan her şey uygulamaya aittir.",
       "choose": "Klasör seç",
       "change": "Başka klasör seç",
       "pick": "Programın kurulu olduğu klasör",
@@ -389,7 +389,7 @@
     "light": "Açık",
     "about": {
       "title": "Hakkında",
-      "body": "STFD, Shut The Fluff Down'ın kısaltması: fluff, bir programın arkada boşuna çalışır bıraktığı her şey. Ansys Electronics Desktop ve Multisim için yazılmış iki başlatıcı betikten doğdu ve aynısını her program için yapar. MIT lisansı.",
+      "body": "STFD, Shut The Fluff Down'ın kısaltması: fluff, bir programın arkada boşuna çalışır bıraktığı her şey. İki mühendislik programı için yazılmış iki başlatıcı betikten doğdu ve aynısını her program için yapar. MIT lisansı.",
       "github": "GitHub'daki kaynak kodu"
     }
   },

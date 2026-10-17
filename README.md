@@ -15,9 +15,9 @@ services and closes the helpers it left running.
 > **Not fully tested yet.** Version 1.0.0 is tested against a simulated Windows in the browser and,
 > on GitHub's Windows runners, against a real one: real programs closed politely or ended, a real
 > service started, stopped and given permissions, and the built app opened the way its shortcut
-> opens it. It has not been used day to day with Ansys or Multisim yet.
+> opens it. It has not been used day to day yet.
 
-![The Apps page: Multisim waiting 26 seconds before its leftovers close, Ansys with its license server still running](docs/images/apps.png)
+![The Apps page: a circuit simulator waiting 26 seconds before its leftovers close, a field solver with its license server still running](docs/images/apps.png)
 
 ## What it does
 
@@ -45,15 +45,14 @@ services and closes the helpers it left running.
 
 ## Download
 
-From [Releases](https://github.com/bugragungoz/smart-launcher-scripts/releases): the `.exe`
+From [Releases](https://github.com/bugragungoz/STFD/releases): the `.exe`
 installer (for your account) or the `.msi` (for every account). Windows 10 and 11, 64-bit.
 
 ## Use
 
-1. **Add app**, then **Choose folder**: the program's own folder, for example
-   `C:\Program Files (x86)\National Instruments` for Multisim or `C:\Program Files\AnsysEM` for
-   Ansys Electronics Desktop. STFD refuses folders that hold unrelated programs, such as
-   Program Files itself.
+1. **Add app**, then **Choose folder**: the program's own folder, usually its vendor's folder in
+   `C:\Program Files` or `C:\Program Files (x86)`. STFD refuses folders that hold unrelated
+   programs, such as Program Files itself.
 2. Pick the program to open; the likely one is first. Change the name if you like.
 3. Check the services that come and go with it. The ones in its folders and from the same publisher
    are already checked.
@@ -62,7 +61,7 @@ installer (for your account) or the `.msi` (for every account). Windows 10 and 1
    once for administrator rights if the services need it.
 5. Open the program from the new shortcut, and close it as usual.
 
-![Adding Multisim: the services found in its folder, two of which start with Windows today](docs/images/add.png)
+![Adding a circuit simulator: the services found in its vendor's folders, two of which start with Windows today](docs/images/add.png)
 
 **Watching apps opened another way.** A file, the Start menu or a taskbar pin opens a program
 without STFD. With **Settings > Also watch apps opened another way**, STFD starts with
@@ -92,8 +91,8 @@ another app still uses them. Everything else on the service stays as it was. The
 
 ## From the scripts
 
-This repository held two batch scripts, `Ansys Electronics.bat` and `Multisim.bat`, that started a
-fixed list of services, opened one program from a fixed path, and stopped the services when its
+This repository held two batch scripts, one for each of two engineering programs, that started a
+fixed list of services, opened the program from a fixed path, and stopped the services when its
 process ended. STFD does the same for any program without editing paths or service names, also
 closes the helpers left behind, and needs administrator rights once instead of on every launch. The
 scripts are in the history of this repository.

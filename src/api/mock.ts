@@ -1,8 +1,9 @@
 /**
- * A simulated Windows for the page in a plain browser: Multisim and Ansys Electronics Desktop with
- * the services the owner's old scripts started, programs that open and close on their own, and the
- * waits and cleanups the real app does. `?fast` shortens every wait (UI tests, screenshots);
- * `?scenario=empty` starts without apps, `?scenario=closing` with Multisim just closed.
+ * A simulated Windows for the page in a plain browser: two made-up programs, a circuit simulator
+ * with the services of its vendor and a field solver with a license server, programs that open and
+ * close on their own, and the waits and cleanups the real app does. `?fast` shortens every wait (UI
+ * tests, screenshots); `?scenario=empty` starts without apps, `?scenario=closing` with the circuit
+ * simulator just closed.
  * Pickers return `window.__stfdPick` when a test set it.
  */
 import type { Api } from './index';
@@ -14,12 +15,13 @@ const FAST = params.has('fast');
 const SCENARIO = params.get('scenario') ?? '';
 const ms = (n: number) => (FAST ? Math.min(n, 400) : n);
 
-const NI = 'C:\\Program Files (x86)\\National Instruments';
-const NI64 = 'C:\\Program Files\\National Instruments';
-const MULTISIM = `${NI}\\Circuit Design Suite 14.3\\multisim.exe`;
-const ANSYS_DIR = 'C:\\Program Files\\AnsysEM';
-const ANSYS = `${ANSYS_DIR}\\v241\\Win64\\ansysedt.exe`;
-const LICENSING = 'C:\\Program Files\\ANSYS Inc\\Shared Files\\Licensing\\winx64';
+const LAB = 'C:\\Program Files (x86)\\Example Labs';
+const LAB64 = 'C:\\Program Files\\Example Labs';
+const SIMULATOR = `${LAB}\\Circuit Simulator 14\\circuitsim.exe`;
+const SOLVER_DIR = 'C:\\Program Files\\Field Solver';
+const SOLVER = `${SOLVER_DIR}\\v241\\Win64\\fieldsolver.exe`;
+const VENDOR = 'C:\\Program Files\\Sample Systems';
+const LICENSING = `${VENDOR}\\Shared Files\\Licensing\\winx64`;
 
 interface MockService extends ServiceInfo {
   /** The program that runs while it does, if it has its own. */
@@ -38,22 +40,22 @@ const svc = (name: string, display: string, program: string, company: string, st
 });
 
 const services: MockService[] = [
-  svc('NIAuthenticationService', 'NI Authentication Service', `${NI}\\Shared\\Security\\niauth.exe`, 'National Instruments'),
-  svc('NIDomainService', 'NI Domain Service', `${NI}\\Shared\\Security\\nidmsrv.exe`, 'National Instruments'),
-  svc('nimDNSResponder', 'NI mDNS Responder Service', `${NI64}\\Shared\\mDNS Responder\\nimdnsResponder.exe`, 'National Instruments'),
-  svc('NINetworkDiscovery', 'NI Network Discovery', `${NI}\\Shared\\Network Discovery\\nidiscovery.exe`, 'National Instruments', 'running', 'automatic'),
-  svc('niPSPServiceLocator', 'NI PSP Service Locator', `${NI}\\Shared\\NI PSP\\lkads.exe`, 'National Instruments'),
-  svc('NiSvcLoc', 'NI Service Locator', `${NI}\\Shared\\niSvcLoc\\nisvcloc.exe`, 'National Instruments', 'running', 'automatic'),
-  svc('NITimeSync', 'NI Time Synchronization', `${NI}\\Shared\\Time Sync\\nitsync.exe`, 'National Instruments'),
-  svc('ANSYSLicensingTomcat', 'ANSYS Licensing Tomcat', `${LICENSING}\\tomcat\\bin\\tomcat.exe`, 'ANSYS, Inc.', 'running', 'automatic'),
-  svc('ANSYSLicenseManager', 'ANSYS, Inc. License Manager CVD', `${LICENSING}\\lmgrd.exe`, 'ANSYS, Inc.', 'running', 'automatic'),
+  svc('ELAuthService', 'Example Labs Authentication Service', `${LAB}\\Shared\\Security\\elauth.exe`, 'Example Labs'),
+  svc('ELDomainService', 'Example Labs Domain Service', `${LAB}\\Shared\\Security\\eldomain.exe`, 'Example Labs'),
+  svc('ELmDNSResponder', 'Example Labs mDNS Responder', `${LAB64}\\Shared\\mDNS Responder\\elmdns.exe`, 'Example Labs'),
+  svc('ELNetworkDiscovery', 'Example Labs Network Discovery', `${LAB}\\Shared\\Network Discovery\\eldiscovery.exe`, 'Example Labs', 'running', 'automatic'),
+  svc('ELDataLocator', 'Example Labs Data Locator', `${LAB}\\Shared\\Data Locator\\eldataloc.exe`, 'Example Labs'),
+  svc('ELSvcLoc', 'Example Labs Service Locator', `${LAB}\\Shared\\Service Locator\\elsvcloc.exe`, 'Example Labs', 'running', 'automatic'),
+  svc('ELTimeSync', 'Example Labs Time Synchronization', `${LAB}\\Shared\\Time Sync\\eltimesync.exe`, 'Example Labs'),
+  svc('SSLicensingWeb', 'Sample Systems Licensing Web Service', `${LICENSING}\\web\\licweb.exe`, 'Sample Systems, Inc.', 'running', 'automatic'),
+  svc('SSLicenseManager', 'Sample Systems License Manager', `${LICENSING}\\licmgr.exe`, 'Sample Systems, Inc.', 'running', 'automatic'),
   svc('Spooler', 'Print Spooler', 'C:\\Windows\\System32\\spoolsv.exe', 'Microsoft Corporation', 'running', 'automatic'),
   svc('wuauserv', 'Windows Update', 'C:\\Windows\\system32\\svchost.exe', 'Microsoft Corporation', 'running', 'manual'),
-  svc('Steam Client Service', 'Steam Client Service', 'C:\\Program Files (x86)\\Common Files\\Steam\\steamservice.exe', 'Valve Corporation'),
-  svc('AdobeARMservice', 'Adobe Acrobat Update Service', 'C:\\Program Files (x86)\\Common Files\\Adobe\\ARM\\1.0\\armsvc.exe', 'Adobe Inc.', 'running', 'automatic'),
+  svc('GameLauncherService', 'Game Launcher Service', 'C:\\Program Files (x86)\\Common Files\\Game Launcher\\launchersvc.exe', 'Example Games'),
+  svc('PdfReaderUpdate', 'PDF Reader Update Service', 'C:\\Program Files (x86)\\Common Files\\PDF Reader\\updatesvc.exe', 'Sample Docs Inc.', 'running', 'automatic'),
 ];
-const NI_SERVICES = services.filter((s) => s.company === 'National Instruments').map((s) => s.name);
-const ANSYS_SERVICES = ['ANSYSLicensingTomcat', 'ANSYSLicenseManager'];
+const LAB_SERVICES = services.filter((s) => s.company === 'Example Labs').map((s) => s.name);
+const SOLVER_SERVICES = ['SSLicensingWeb', 'SSLicenseManager'];
 
 const rule = (name: string) => {
   const s = services.find((x) => x.name === name)!;
@@ -84,11 +86,11 @@ let apps: App[] =
   SCENARIO === 'empty'
     ? []
     : [
-        baseApp('multisim', 'Multisim 14.3', MULTISIM, [NI, NI64], NI_SERVICES, {
-          seen: [MULTISIM, `${NI}\\Shared\\niSvcLoc\\nisvcloc.exe`, `${NI}\\MAX\\NIMax.exe`, 'C:\\Users\\Bugra\\AppData\\Local\\NI\\crash\\nicrash.exe'],
-          keep: [`${NI}\\MAX\\NIMax.exe`],
+        baseApp('simulator', 'Circuit Simulator 14', SIMULATOR, [LAB, LAB64], LAB_SERVICES, {
+          seen: [SIMULATOR, `${LAB}\\Shared\\Service Locator\\elsvcloc.exe`, `${LAB}\\Explorer\\hwexplorer.exe`, 'C:\\Users\\Bugra\\AppData\\Local\\Example Labs\\crash\\elcrash.exe'],
+          keep: [`${LAB}\\Explorer\\hwexplorer.exe`],
         }),
-        baseApp('ansys', 'Ansys Electronics Desktop 2024 R1', ANSYS, [ANSYS_DIR, 'C:\\Program Files\\ANSYS Inc'], ANSYS_SERVICES, { waitSeconds: 60, servicesDelaySeconds: 5 }),
+        baseApp('solver', 'Field Solver 2024 R1', SOLVER, [SOLVER_DIR, VENDOR], SOLVER_SERVICES, { waitSeconds: 60, servicesDelaySeconds: 5 }),
       ];
 for (const a of apps) for (const r of a.services) services.find((s) => s.name === r.name)!.controllable = true;
 
@@ -113,8 +115,9 @@ const target = (path: string, windowed = false): Target => ({ pid: nextPid++, na
 const app = (id: string) => apps.find((a) => a.id === id);
 const display = (name: string) => services.find((s) => s.name === name)?.display ?? name;
 
-// Ansys left its license server running from an earlier session: "Close leftovers now" has work.
-const leftovers = new Map<string, Target[]>([['ansys', [target(`${LICENSING}\\ansysli_server.exe`)]]]);
+// The field solver left its license server running from an earlier session: "Close leftovers now"
+// has work.
+const leftovers = new Map<string, Target[]>([['solver', [target(`${LICENSING}\\licserver.exe`)]]]);
 
 function entry(a: App, live: Live | undefined, outcome: HistoryEntry['outcome'], fields: Partial<HistoryEntry>): HistoryEntry {
   const e: HistoryEntry = {
@@ -147,8 +150,8 @@ function cleanUp(a: App): HistoryEntry {
   const live = sessions.get(a.id);
   const plan = planFor(a);
   for (const name of plan.services) services.find((s) => s.name === name)!.state = 'stopped';
-  const closed = plan.programs.filter((t) => t.windowed || t.name !== 'ansysli_server.exe').map((t) => t.name);
-  const ended = plan.programs.filter((t) => !t.windowed && t.name === 'ansysli_server.exe').map((t) => t.name);
+  const closed = plan.programs.filter((t) => t.windowed || t.name !== 'licserver.exe').map((t) => t.name);
+  const ended = plan.programs.filter((t) => !t.windowed && t.name === 'licserver.exe').map((t) => t.name);
   leftovers.delete(a.id);
   sessions.delete(a.id);
   const outcome = plan.programs.length || plan.services.length ? 'cleaned' : 'nothing';
@@ -193,7 +196,7 @@ function startSession(a: App) {
       const opened = Date.now();
       live.phase = { kind: 'open', since: opened };
       live.openedAt = opened;
-      live.running = [target(a.program, true), ...(a.id === 'multisim' ? [target(`${NI}\\Shared\\niSvcLoc\\nisvcloc.exe`), target(`${NI}\\Circuit Design Suite 14.3\\NIUpdateService.exe`)] : [target(`${LICENSING}\\ansysli_server.exe`)])];
+      live.running = [target(a.program, true), ...(a.id === 'simulator' ? [target(`${LAB}\\Shared\\Service Locator\\elsvcloc.exe`), target(`${LAB}\\Circuit Simulator 14\\ELUpdateService.exe`)] : [target(`${LICENSING}\\licserver.exe`)])];
       live.exitAt = opened + (FAST ? 1200 : 12_000);
     }, ms(a.servicesDelaySeconds * 300));
   }, ms(700));
@@ -202,13 +205,13 @@ function startSession(a: App) {
 if (SCENARIO === 'closing') {
   const a = apps[0]!;
   const now = Date.now();
-  for (const name of NI_SERVICES) services.find((s) => s.name === name)!.state = 'running';
+  for (const name of LAB_SERVICES) services.find((s) => s.name === name)!.state = 'running';
   sessions.set(a.id, {
     phase: { kind: 'closing', since: now - 4000, at: now + 26_000 },
     openedAt: now - 3_600_000,
-    started: NI_SERVICES.slice(0, 5).map(display),
+    started: LAB_SERVICES.slice(0, 5).map(display),
     problems: [],
-    running: [target(`${NI}\\Shared\\niSvcLoc\\nisvcloc.exe`), target(`${NI}\\Circuit Design Suite 14.3\\NIUpdateService.exe`)],
+    running: [target(`${LAB}\\Shared\\Service Locator\\elsvcloc.exe`), target(`${LAB}\\Circuit Simulator 14\\ELUpdateService.exe`)],
     exitAt: Infinity,
   });
 }
@@ -234,13 +237,13 @@ if (SCENARIO !== 'empty') {
       ...fields,
     });
   };
-  past('multisim', day * 0.2, 2.5, { started: NI_SERVICES.slice(0, 5).map(display), stopped: NI_SERVICES.map(display), closed: ['NIUpdateService.exe'], ended: ['nisvcloc.exe'] });
-  past('ansys', day * 1.1, 4, {
-    stopped: ANSYS_SERVICES.map(display),
-    ended: ['ansysli_server.exe'],
-    problems: [{ what: 'ANSYS, Inc. License Manager CVD', code: 'stop_failed', detail: 'it did not finish within 30 s' }],
+  past('simulator', day * 0.2, 2.5, { started: LAB_SERVICES.slice(0, 5).map(display), stopped: LAB_SERVICES.map(display), closed: ['ELUpdateService.exe'], ended: ['elsvcloc.exe'] });
+  past('solver', day * 1.1, 4, {
+    stopped: SOLVER_SERVICES.map(display),
+    ended: ['licserver.exe'],
+    problems: [{ what: 'Sample Systems License Manager', code: 'stop_failed', detail: 'it did not finish within 30 s' }],
   });
-  past('multisim', day * 2.3, 1, { trigger: 'adopted', outcome: 'kept', stopped: [] });
+  past('simulator', day * 2.3, 1, { trigger: 'adopted', outcome: 'kept', stopped: [] });
 }
 
 const delay = <T>(value: T, wait = 250): Promise<T> => new Promise((resolve) => setTimeout(() => resolve(structuredClone(value)), ms(wait)));
@@ -260,17 +263,17 @@ function status(a: App): AppStatus {
 }
 
 const PROGRAMS: Record<string, [string, string | null, boolean][]> = {
-  [NI]: [
-    ['Circuit Design Suite 14.3\\multisim.exe', 'Multisim', false],
-    ['Circuit Design Suite 14.3\\ultiboard.exe', 'Ultiboard', false],
-    ['MAX\\NIMax.exe', 'Measurement & Automation Explorer', false],
-    ['Shared\\niSvcLoc\\nisvcloc.exe', 'NI Service Locator', false],
-    ['Circuit Design Suite 14.3\\NIUpdateService.exe', 'NI Update Service', true],
-    ['Shared\\NIUninstaller\\uninst.exe', 'NI Uninstaller', true],
+  [LAB]: [
+    ['Circuit Simulator 14\\circuitsim.exe', 'Circuit Simulator', false],
+    ['Circuit Simulator 14\\boarddesigner.exe', 'Board Designer', false],
+    ['Explorer\\hwexplorer.exe', 'Hardware Explorer', false],
+    ['Shared\\Service Locator\\elsvcloc.exe', 'Example Labs Service Locator', false],
+    ['Circuit Simulator 14\\ELUpdateService.exe', 'Example Labs Update Service', true],
+    ['Shared\\Uninstaller\\uninst.exe', 'Example Labs Uninstaller', true],
   ],
-  [ANSYS_DIR]: [
-    ['v241\\Win64\\ansysedt.exe', 'Ansys Electronics Desktop', false],
-    ['v241\\Win64\\ansysedtsv.exe', 'Ansys Electronics Desktop Server', false],
+  [SOLVER_DIR]: [
+    ['v241\\Win64\\fieldsolver.exe', 'Field Solver', false],
+    ['v241\\Win64\\fieldsolversv.exe', 'Field Solver Server', false],
     ['v241\\Win64\\Uninstall.exe', 'Uninstall', true],
   ],
 };
@@ -278,7 +281,7 @@ const PROGRAMS: Record<string, [string, string | null, boolean][]> = {
 function pick(): string | null {
   const w = window as unknown as { __stfdPick?: string | null };
   const v = w.__stfdPick;
-  return v === undefined ? NI : v;
+  return v === undefined ? LAB : v;
 }
 
 export const mockApi: Api = {
@@ -306,16 +309,16 @@ export const mockApi: Api = {
     const programs: ExeFile[] = problem
       ? []
       : list.map(([rel, description, noise], i) => ({ path: `${f}\\${rel}`, size: 40_000_000 - i * 3_000_000, depth: rel.split('\\').length - 1, gui: !noise, description, noise }));
-    return delay({ folder: f, problem, programs, vendorFolders: f === NI ? [NI64] : f === ANSYS_DIR ? ['C:\\Program Files\\ANSYS Inc'] : [] }, 500);
+    return delay({ folder: f, problem, programs, vendorFolders: f === LAB ? [LAB64] : f === SOLVER_DIR ? [VENDOR] : [] }, 500);
   },
   async inspectProgram(path) {
     const known = Object.entries(PROGRAMS).flatMap(([dir, list]) => list.map(([rel, d]) => [`${dir}\\${rel}`, d] as const)).find(([p]) => p === path);
-    const company = path.startsWith(NI) ? 'National Instruments' : path.startsWith(ANSYS_DIR) ? 'ANSYS, Inc.' : null;
-    const name = path === MULTISIM ? 'Multisim 14.3' : path === ANSYS ? 'Ansys Electronics Desktop 2024 R1' : (known?.[1] ?? file(path).replace(/\.exe$/i, ''));
+    const company = path.startsWith(LAB) ? 'Example Labs' : path.startsWith(SOLVER_DIR) ? 'Sample Systems, Inc.' : null;
+    const name = path === SIMULATOR ? 'Circuit Simulator 14' : path === SOLVER ? 'Field Solver 2024 R1' : (known?.[1] ?? file(path).replace(/\.exe$/i, ''));
     return delay({ path, name, company, description: known?.[1] ?? null }, 120);
   },
   async listServices(folders, program) {
-    const company = program.startsWith(NI) ? 'National Instruments' : program.startsWith(ANSYS_DIR) ? 'ANSYS, Inc.' : null;
+    const company = program.startsWith(LAB) ? 'Example Labs' : program.startsWith(SOLVER_DIR) ? 'Sample Systems, Inc.' : null;
     const inside = (p: string | null) => !!p && folders.some((f) => p.toLowerCase().startsWith(f.toLowerCase() + '\\'));
     const related: Suggested[] = [];
     for (const s of services) {
@@ -327,8 +330,8 @@ export const mockApi: Api = {
     return delay({ company, related, all }, 700);
   },
   async findShortcuts(program) {
-    if (program === MULTISIM) return delay([{ path: 'C:\\Users\\Bugra\\Desktop\\Multisim 14.3.lnk', movable: true }], 150);
-    if (program === ANSYS) return delay([{ path: 'C:\\Users\\Public\\Desktop\\Ansys Electronics Desktop 2024 R1.lnk', movable: false }], 150);
+    if (program === SIMULATOR) return delay([{ path: 'C:\\Users\\Bugra\\Desktop\\Circuit Simulator 14.lnk', movable: true }], 150);
+    if (program === SOLVER) return delay([{ path: 'C:\\Users\\Public\\Desktop\\Field Solver 2024 R1.lnk', movable: false }], 150);
     return delay([], 150);
   },
   async saveApp(draft: Draft) {

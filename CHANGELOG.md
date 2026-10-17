@@ -1,8 +1,14 @@
 # Changelog
 
+## 1.0.1
+
+- The examples in the app, the screenshots and the tests use made-up programs and vendors instead
+  of real products.
+- The app's GitHub button and the download link point at the renamed repository.
+
 ## 1.0.0
 
-STFD replaces the Ansys and Multisim batch scripts with one app for any program.
+STFD replaces the two batch scripts this repository held with one app for any program.
 
 - Choose a program's folder and the program to open; its services are found in the folder and
   from the same publisher.

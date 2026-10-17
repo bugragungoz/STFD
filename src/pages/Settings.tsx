@@ -10,7 +10,7 @@ import { formatWait } from '../lib/format';
 import { saveSettings, settings } from '../state/settings';
 import { toast } from '../state/toasts';
 
-export const REPO_URL = 'https://github.com/bugragungoz/smart-launcher-scripts';
+export const REPO_URL = 'https://github.com/bugragungoz/STFD';
 
 const WAITS = [0, 10, 30, 60, 120, 300];
 const POLITE = [5, 10, 20, 30];

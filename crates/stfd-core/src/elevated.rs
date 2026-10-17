@@ -90,7 +90,7 @@ mod tests {
         Request {
             sid: SID.into(),
             services: vec![Change {
-                name: "NI Domain Service".into(),
+                name: "Example Labs Domain Service".into(),
                 grant: true,
                 manual: true,
                 ..Change::default()

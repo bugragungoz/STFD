@@ -38,9 +38,9 @@ impl ServiceOriginal {
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ServiceRule {
-    /// The service's key name (`NIDomainService`), which never changes with the language.
+    /// The service's key name (`ELDomainService`), which never changes with the language.
     pub name: String,
-    /// The name Windows shows (`NI Domain Service`).
+    /// The name Windows shows (`Example Labs Domain Service`).
     pub display: String,
     /// Start it before the program opens.
     pub start: bool,
@@ -294,16 +294,16 @@ pub struct HistoryEntry {
 mod tests {
     use super::*;
 
-    fn multisim() -> App {
+    fn simulator() -> App {
         App {
             id: "ms".into(),
-            name: "Multisim".into(),
-            program: "C:\\Program Files (x86)\\National Instruments\\Circuit Design Suite 14.3\\multisim.exe".into(),
+            name: "Circuit Simulator".into(),
+            program: "C:\\Program Files (x86)\\Example Labs\\Circuit Simulator 14\\circuitsim.exe".into(),
             arguments: String::new(),
-            folders: vec!["C:\\Program Files (x86)\\National Instruments".into()],
+            folders: vec!["C:\\Program Files (x86)\\Example Labs".into()],
             services: vec![],
             also_close: vec!["C:\\Tools\\helper.exe".into()],
-            keep: vec!["C:\\Program Files (x86)\\National Instruments\\MAX\\NIMax.exe".into()],
+            keep: vec!["C:\\Program Files (x86)\\Example Labs\\Explorer\\hwexplorer.exe".into()],
             wait_seconds: None,
             services_delay_seconds: 3,
             close_programs: true,
@@ -326,11 +326,11 @@ mod tests {
 
     #[test]
     fn what_belongs_to_an_app() {
-        let app = multisim();
-        assert!(app.owns("c:\\program files (x86)\\national instruments\\shared\\nisvc.exe"));
+        let app = simulator();
+        assert!(app.owns("c:\\program files (x86)\\example labs\\shared\\labsvc.exe"));
         assert!(app.owns("C:\\Tools\\helper.exe"));
         assert!(
-            !app.owns("C:\\Program Files (x86)\\National Instruments\\MAX\\NIMax.exe"),
+            !app.owns("C:\\Program Files (x86)\\Example Labs\\Explorer\\hwexplorer.exe"),
             "kept"
         );
         assert!(!app.owns("C:\\Program Files\\Other\\x.exe"));
@@ -338,21 +338,13 @@ mod tests {
 
     #[test]
     fn open_while_the_program_runs_or_any_of_its_programs_shows_a_window() {
-        let app = multisim();
+        let app = simulator();
         let main = proc(10, &app.program, false);
-        let windowed_helper = proc(
-            11,
-            "C:\\Program Files (x86)\\National Instruments\\Shared\\ui.exe",
-            true,
-        );
-        let background = proc(
-            12,
-            "C:\\Program Files (x86)\\National Instruments\\Shared\\svc.exe",
-            false,
-        );
+        let windowed_helper = proc(11, "C:\\Program Files (x86)\\Example Labs\\Shared\\ui.exe", true);
+        let background = proc(12, "C:\\Program Files (x86)\\Example Labs\\Shared\\svc.exe", false);
         let kept_window = proc(
             13,
-            "C:\\Program Files (x86)\\National Instruments\\MAX\\NIMax.exe",
+            "C:\\Program Files (x86)\\Example Labs\\Explorer\\hwexplorer.exe",
             true,
         );
         let other = proc(14, "C:\\Program Files\\Other\\x.exe", true);
@@ -365,7 +357,7 @@ mod tests {
 
     #[test]
     fn the_wait_is_the_apps_own_or_the_default() {
-        let mut app = multisim();
+        let mut app = simulator();
         let settings = Settings::default();
         assert_eq!(app.wait_ms(&settings), 30_000);
         app.wait_seconds = Some(0);
@@ -374,7 +366,7 @@ mod tests {
 
     #[test]
     fn seen_programs_are_most_recent_first_without_duplicates() {
-        let mut app = multisim();
+        let mut app = simulator();
         assert!(app.remember(&["C:\\a.exe".into(), "C:\\b.exe".into()]));
         assert_eq!(app.seen, vec!["C:\\a.exe", "C:\\b.exe"]);
         assert!(app.remember(&["c:\\B.EXE".into()]));
