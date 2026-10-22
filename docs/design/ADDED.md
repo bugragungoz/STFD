@@ -12,6 +12,7 @@ is added: every color comes from `src/styles/tokens.css`, which `npm run check:c
 | Button `quiet` and `danger` | `components/Button.tsx` | Quiet has no outline until hovered; danger uses the `warn` outline and text. |
 | Checkbox | `components/Switch.tsx` | Native input, 3:1 outline, accent fill with a check. |
 | Badge | `components.css` | A small outlined pill. `badge-ok`, `badge-info` and `badge-warn` use the status tokens and always carry a word, often an icon, never color alone. |
+| Chip check | `components.css` | A chosen filter chip shows a check drawn by CSS with empty alternative text, so a screen reader hears the chip's name and "pressed", not "check mark". |
 | Phase badge | `components/PhaseBadge.tsx` | Not open (neutral), Starting (info), Open (ok, play), Closing the rest in 0:25 (info, timer), Closing the rest (info). |
 | App icon | `components/AppIcon.tsx`, `layout.css` | The program's own icon; until it arrives (or when it has none), its first letter on `surface-2` in the accent ink. |
 | App card | `pages/Apps.tsx`, `layout.css` | A bordered row: icon, name, a quiet summary, the phase badge and Open. |

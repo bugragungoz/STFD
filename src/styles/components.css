@@ -48,7 +48,7 @@
 }
 .bg-chip:hover { background: var(--surface-2); color: var(--ink); }
 .bg-chip[aria-pressed='true'] { background: var(--accent-quiet); border-color: var(--accent-ink); color: var(--accent-ink); }
-.bg-chip[aria-pressed='true']::before { content: '\2713'; font-size: 12px; }
+.bg-chip[aria-pressed='true']::before { content: '\2713' / ''; font-size: 12px; }
 
 /* ---- Fields ---- */
 .bg-field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
